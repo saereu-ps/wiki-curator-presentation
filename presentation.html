@@ -205,6 +205,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: gradientFlow 3s ease infinite;
+            padding-bottom: 0.1em; /* Fix clipping of Thai lower vowels like ุ, ู */
         }
         @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
@@ -963,8 +964,8 @@
             <h1 class="stagger lang-en" style="font-size: 4rem; margin-bottom: 1rem;">Ready to <span class="gradient-text">Deploy?</span></h1>
             <h1 class="stagger lang-th" style="font-size: 4rem; margin-bottom: 1rem;">พร้อมที่จะ<span class="gradient-text">เริ่มใช้งาน?</span></h1>
             
-            <p class="lead-text stagger lang-en" style="max-width: 600px; margin: 0 auto 4rem auto;">Transform your organization's scattered meeting notes<br>into a <span class="text-highlight">living knowledge graph</span> today.</p>
-            <p class="lead-text stagger lang-th" style="max-width: 600px; margin: 0 auto 4rem auto;">เปลี่ยนบันทึกการประชุมที่กระจัดกระจาย<br>ให้กลายเป็น <span class="text-highlight">คลังความรู้ที่มีชีวิต</span> ที่ทั้งทีมใช้ประโยชน์ได้ตั้งแต่วันนี้</p>
+            <p class="lead-text stagger lang-en" style="max-width: 800px; margin: 0 auto 4rem auto;">Transform your organization's scattered meeting notes<br>into a <span class="text-highlight">living knowledge graph</span> today.</p>
+            <p class="lead-text stagger lang-th" style="max-width: 800px; margin: 0 auto 4rem auto;">เปลี่ยนบันทึกการประชุมที่กระจัดกระจาย<br>ให้กลายเป็น <span class="text-highlight">คลังความรู้ที่มีชีวิต</span> ที่ทั้งทีมใช้ประโยชน์ได้ตั้งแต่วันนี้</p>
             
             <div class="stagger" style="margin-top: 2rem;">
                 <button class="cta-btn lang-en" onclick="alert('Deployment sequence initiated! 🚀')">Initialize Curator</button>
