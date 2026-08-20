@@ -435,11 +435,6 @@
             50% { opacity: 1; }
             100% { transform: translateX(30px); opacity: 0; }
         }
-        @keyframes glowingPulse {
-            0% { box-shadow: 0 0 20px rgba(66, 133, 244, 0.4), inset 0 0 10px rgba(66, 133, 244, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(66, 133, 244, 0.8), inset 0 0 20px rgba(66, 133, 244, 0.4); }
-            100% { box-shadow: 0 0 20px rgba(66, 133, 244, 0.4), inset 0 0 10px rgba(66, 133, 244, 0.2); }
-        }
         .cta-btn {
             display: inline-block;
             padding: 1rem 2.5rem;
@@ -454,7 +449,6 @@
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            animation: glowingPulse 3s infinite;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             text-decoration: none;
             position: relative;
@@ -470,7 +464,7 @@
         }
         .cta-btn:hover {
             transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         .cta-btn:hover::before { left: 150%; }
     </style>
@@ -879,7 +873,7 @@
         <!-- Slide 10: Call to Action (The End) -->
         <div class="slide" id="slide-10" style="align-items: center; justify-content: center; text-align: center;">
             <div class="stagger" style="margin-bottom: 2rem;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="url(#blue-purple-grad)" stroke-width="1.5" style="width: 80px; height: 80px; margin: 0 auto; display: block; filter: drop-shadow(0 0 10px rgba(66, 133, 244, 0.5));">
+                <svg viewBox="0 0 24 24" fill="none" stroke="url(#blue-purple-grad)" stroke-width="1.5" style="width: 80px; height: 80px; margin: 0 auto; display: block;">
                     <defs>
                         <linearGradient id="blue-purple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stop-color="#4285F4" />
