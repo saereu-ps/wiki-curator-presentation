@@ -315,16 +315,16 @@
         /* --- High-End Horizontal Workflow Timeline --- */
         .premium-timeline { position: relative; width: 100%; max-width: 1300px; margin: 4rem auto 0; display: flex; flex-direction: row; gap: 2rem; padding-top: 70px; }
         .premium-timeline::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--brand-blue), var(--brand-yellow), var(--brand-red), var(--brand-green)); opacity: 0.3; z-index: 0; }
-        .premium-timeline::after { content: ''; position: absolute; top: 18px; left: 0; width: 100px; height: 6px; background: #fff; border-radius: 10px; box-shadow: 0 0 20px 5px rgba(255,255,255,0.8); z-index: 1; animation: scanline-h 4s ease-in-out infinite alternate; }
+        .scanner-line { content: ''; position: absolute; top: 18px; left: 0; width: 100px; height: 6px; background: #fff; border-radius: 10px; box-shadow: 0 0 20px 5px rgba(255,255,255,0.8); z-index: 1; animation: scanline-h 4s ease-in-out infinite alternate; pointer-events: none; }
         @keyframes scanline-h { 0% { left: 0%; } 100% { left: calc(100% - 100px); } }
         .premium-step { flex: 1; position: relative; z-index: 2; display: flex; flex-direction: column; }
         .premium-step::before { content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: currentColor; opacity: 0.3; z-index: 0; }
-        .premium-dot { position: absolute; top: -50px; left: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; background: currentColor; box-shadow: 0 0 15px currentColor, 0 0 30px currentColor; z-index: 3; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .premium-dot { position: absolute; top: -50px; left: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; background: currentColor; box-shadow: 0 0 15px currentColor, 0 0 30px currentColor; z-index: 3; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, filter 0.4s; }
         .step-1 .premium-dot, .step-1::before { color: var(--brand-blue); }
         .step-2 .premium-dot, .step-2::before { color: var(--brand-yellow); }
         .step-3 .premium-dot, .step-3::before { color: var(--brand-red); }
         .step-4 .premium-dot, .step-4::before { color: var(--brand-green); }
-        .premium-step:hover .premium-dot { transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 25px currentColor, 0 0 50px currentColor; }
+        .premium-step:hover .premium-dot, .premium-dot.active { transform: translate(-50%, -50%) scale(1.7); box-shadow: 0 0 25px currentColor, 0 0 50px currentColor; filter: brightness(1.5); }
         @keyframes premiumBreath {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
@@ -667,6 +667,7 @@
             <p class="lead-text stagger lang-th">เปลี่ยนโน้ตการประชุม<br>ให้กลายเป็น <span class="text-highlight">ฐานความรู้ที่เชื่อมโยงกัน</span> อย่างง่ายดาย</p>
             
             <div class="premium-timeline stagger">
+                <div class="scanner-line"></div>
                 <div class="premium-step step-1 magnetic-el">
                     <div class="premium-dot"></div>
                     <div class="premium-card">
@@ -1234,6 +1235,28 @@
             
             // Initialize
             updateSlides();
+            // Scanner interaction with dots
+            function updateScanner() {
+                const scanner = document.querySelector('.scanner-line');
+                const dots = document.querySelectorAll('.premium-dot');
+                if (scanner && dots.length > 0) {
+                    const scannerRect = scanner.getBoundingClientRect();
+                    const scannerCenter = scannerRect.left + scannerRect.width / 2;
+                    
+                    dots.forEach(dot => {
+                        const dotRect = dot.getBoundingClientRect();
+                        const dotCenter = dotRect.left + dotRect.width / 2;
+                        // Activate when scanner passes over (60px threshold)
+                        if (Math.abs(scannerCenter - dotCenter) < 60) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                }
+                requestAnimationFrame(updateScanner);
+            }
+            updateScanner();
         });
     </script>
 </body>
