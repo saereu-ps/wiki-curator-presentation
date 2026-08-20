@@ -319,12 +319,12 @@
         @keyframes scanline-h { 0% { left: 0%; } 100% { left: calc(100% - 100px); } }
         .premium-step { flex: 1; position: relative; z-index: 2; display: flex; flex-direction: column; }
         .premium-step::before { content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: currentColor; opacity: 0.3; z-index: 0; }
-        .premium-dot { position: absolute; top: -50px; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 50%; background: var(--bg-base); border: 4px solid var(--text-primary); box-shadow: 0 0 15px currentColor; z-index: 3; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.4s; }
-        .step-1 .premium-dot, .step-1::before { color: var(--brand-blue); border-color: var(--brand-blue); }
-        .step-2 .premium-dot, .step-2::before { color: var(--brand-yellow); border-color: var(--brand-yellow); }
-        .step-3 .premium-dot, .step-3::before { color: var(--brand-red); border-color: var(--brand-red); }
-        .step-4 .premium-dot, .step-4::before { color: var(--brand-green); border-color: var(--brand-green); }
-        .premium-step:hover .premium-dot { transform: translate(-50%, -50%) scale(1.5); background: currentColor; box-shadow: 0 0 30px currentColor; }
+        .premium-dot { position: absolute; top: -50px; left: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; background: currentColor; box-shadow: 0 0 15px currentColor, 0 0 30px currentColor; z-index: 3; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .step-1 .premium-dot, .step-1::before { color: var(--brand-blue); }
+        .step-2 .premium-dot, .step-2::before { color: var(--brand-yellow); }
+        .step-3 .premium-dot, .step-3::before { color: var(--brand-red); }
+        .step-4 .premium-dot, .step-4::before { color: var(--brand-green); }
+        .premium-step:hover .premium-dot { transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 25px currentColor, 0 0 50px currentColor; }
         @keyframes premiumBreath {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
@@ -558,7 +558,7 @@
             
             <div class="grid-2 stagger">
                 <!-- Left: GitHub Gist Reference -->
-                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <div style="display: flex; flex-direction: column; gap: 2rem; justify-content: center;">
                     <!-- macOS Style Gist Window -->
                     <div class="card magnetic-el" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; background: rgba(0,0,0,0.6); cursor: pointer;" onclick="window.open('https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f', '_blank')">
                         <!-- macOS Title Bar -->
