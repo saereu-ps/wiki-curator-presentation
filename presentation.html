@@ -10,7 +10,7 @@
     <style>
         :root {
             /* Google Light-Dark Theme */
-            --bg-base: #1A1D20; 
+            --bg-base: #0a0b10; 
             --text-primary: #FFFFFF; 
             --text-secondary: #9AA0A6; 
             
@@ -77,28 +77,46 @@
 
         /* --- Aurora Sky Background (Top Half) --- */
         .mesh-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: -50vh; left: -50vw; width: 200vw; height: 200vh;
             z-index: 0; pointer-events: none; overflow: hidden;
             transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
             transform-origin: center center;
             will-change: transform;
+            /* Premium Fluid Mesh Secret: Heavy Blur */
+            filter: blur(80px);
+            opacity: 0.8;
         }
         
         .blob {
-            position: absolute; border-radius: 50%; opacity: 0.35; 
-            animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute; opacity: 0.7; 
             will-change: transform;
+            mix-blend-mode: hard-light;
         }
         
-        .blob-1 { top: -10%; left: 10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(66, 133, 244, 1) 0%, rgba(66, 133, 244, 0) 70%); }
-        .blob-2 { top: 0%; right: 10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(227, 75, 53, 1) 0%, rgba(227, 75, 53, 0) 70%); animation-delay: -5s; }
-        .blob-3 { top: 20%; left: 40%; width: 45vw; height: 45vw; background: radial-gradient(circle, rgba(245, 195, 0, 1) 0%, rgba(245, 195, 0, 0) 70%); animation-delay: -10s; }
-        .blob-4 { top: 10%; left: -10%; width: 55vw; height: 55vw; background: radial-gradient(circle, rgba(79, 178, 88, 1) 0%, rgba(79, 178, 88, 0) 70%); animation-delay: -15s; }
+        .blob-1 { top: 20%; left: 30%; width: 60vw; height: 60vw; background: radial-gradient(closest-side, rgba(66, 133, 244, 0.9) 0%, rgba(66, 133, 244, 0) 100%); animation: float-1 12s infinite alternate ease-in-out; }
+        .blob-2 { top: 25%; right: 30%; width: 70vw; height: 70vw; background: radial-gradient(closest-side, rgba(227, 75, 53, 0.8) 0%, rgba(227, 75, 53, 0) 100%); animation: float-2 15s infinite alternate-reverse ease-in-out; animation-delay: -3s; }
+        .blob-3 { top: 35%; left: 45%; width: 55vw; height: 55vw; background: radial-gradient(closest-side, rgba(245, 195, 0, 0.8) 0%, rgba(245, 195, 0, 0) 100%); animation: float-3 14s infinite alternate ease-in-out; animation-delay: -7s; }
+        .blob-4 { top: 30%; left: 20%; width: 65vw; height: 65vw; background: radial-gradient(closest-side, rgba(79, 178, 88, 0.8) 0%, rgba(79, 178, 88, 0) 100%); animation: float-1 16s infinite alternate-reverse ease-in-out; animation-delay: -11s; }
+        .blob-5 { top: 45%; left: 60%; width: 75vw; height: 75vw; background: radial-gradient(closest-side, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0) 100%); animation: float-2 13s infinite alternate ease-in-out; animation-delay: -5s; }
+        .blob-6 { top: 55%; left: 35%; width: 60vw; height: 60vw; background: radial-gradient(closest-side, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0) 100%); animation: float-3 17s infinite alternate-reverse ease-in-out; animation-delay: -9s; }
         
-        @keyframes float {
+        @keyframes float-1 {
             0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            50% { transform: translate(5%, 10%) scale(1.05) rotate(90deg); }
-            100% { transform: translate(-5%, 5%) scale(0.95) rotate(180deg); }
+            33% { transform: translate(15%, 5%) scale(1.1) rotate(45deg); }
+            66% { transform: translate(5%, 20%) scale(0.9) rotate(90deg); }
+            100% { transform: translate(-15%, -10%) scale(1.05) rotate(135deg); }
+        }
+        @keyframes float-2 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(-10%, 15%) scale(1.05) rotate(-45deg); }
+            66% { transform: translate(15%, -5%) scale(0.95) rotate(-90deg); }
+            100% { transform: translate(5%, -15%) scale(1.1) rotate(-135deg); }
+        }
+        @keyframes float-3 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(10%, -15%) scale(0.95) rotate(60deg); }
+            66% { transform: translate(-15%, -5%) scale(1.05) rotate(120deg); }
+            100% { transform: translate(-5%, 15%) scale(1) rotate(180deg); }
         }
 
         /* --- 3D Moving Cyber Grid Background (Bottom Half) --- */
@@ -147,21 +165,50 @@
         .slide.next { transform: translateX(60vw) translateZ(-800px) rotateY(35deg); opacity: 0; }
 
         /* Staggered Animations */
-        .slide .stagger { opacity: 0; transform: translateY(60px) translateZ(-150px) rotateX(-15deg); transition: all 1s cubic-bezier(0.19, 1, 0.22, 1); }
-        .slide.active .stagger { opacity: 1; transform: translateY(0) translateZ(0) rotateX(0deg); }
+        .slide .stagger { 
+            opacity: 0; 
+            transform: translateY(60px) translateZ(-150px) rotateX(-15deg); 
+            transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1); 
+            will-change: transform, opacity;
+        }
+        .slide.active .stagger { 
+            opacity: 1; 
+            transform: translateY(0) translateZ(0) rotateX(0deg); 
+        }
         .slide.active .stagger:nth-child(1) { transition-delay: 0.1s; }
-        .slide.active .stagger:nth-child(2) { transition-delay: 0.15s; }
-        .slide.active .stagger:nth-child(3) { transition-delay: 0.2s; }
-        .slide.active .stagger:nth-child(4) { transition-delay: 0.25s; }
-        .slide.active .stagger:nth-child(5) { transition-delay: 0.3s; }
+        .slide.active .stagger:nth-child(2) { transition-delay: 0.2s; }
+        .slide.active .stagger:nth-child(3) { transition-delay: 0.3s; }
+        .slide.active .stagger:nth-child(4) { transition-delay: 0.4s; }
+        .slide.active .stagger:nth-child(5) { transition-delay: 0.5s; }
 
         /* --- Typography --- */
         h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
 
-        h1 { font-size: clamp(3.5rem, 7vw, 6rem); line-height: 1.1; margin-bottom: 1rem; }
+        /* Premium Text Shine Effect for Main Titles */
+        h1, h2 {
+            background: linear-gradient(110deg, var(--text-primary) 30%, #ffffff 50%, var(--text-primary) 70%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: textShine 5s linear infinite;
+        }
+        @keyframes textShine {
+            to { background-position: -200% center; }
+        }
+
+        h1 { font-size: clamp(4rem, 8vw, 7rem); line-height: 1.1; margin-bottom: 1rem; }
+        
         .gradient-text {
             background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-red) 50%, var(--brand-yellow) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease infinite;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem; }
@@ -263,6 +310,30 @@
         .arch-tag { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.8rem; border-radius: 4px; text-align: center; border: 1px solid rgba(66, 133, 244, 0.3); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1); font-weight: 600; }
         .arch-desc { color: var(--text-secondary); font-size: 1.05rem; font-weight: 400; }
 
+        /* --- High-End Horizontal Workflow Timeline --- */
+        .premium-timeline { position: relative; width: 100%; max-width: 1300px; margin: 4rem auto 0; display: flex; flex-direction: row; gap: 2rem; padding-top: 70px; }
+        .premium-timeline::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--brand-blue), var(--brand-yellow), var(--brand-red), var(--brand-green)); opacity: 0.3; z-index: 0; }
+        .premium-timeline::after { content: ''; position: absolute; top: 18px; left: 0; width: 100px; height: 6px; background: #fff; border-radius: 10px; box-shadow: 0 0 20px 5px rgba(255,255,255,0.8); z-index: 1; animation: scanline-h 4s ease-in-out infinite alternate; }
+        @keyframes scanline-h { 0% { left: 0%; } 100% { left: calc(100% - 100px); } }
+        .premium-step { flex: 1; position: relative; z-index: 2; display: flex; flex-direction: column; }
+        .premium-step::before { content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: currentColor; opacity: 0.3; z-index: 0; }
+        .premium-dot { position: absolute; top: -50px; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 50%; background: var(--bg-base); border: 4px solid var(--text-primary); box-shadow: 0 0 15px currentColor; z-index: 3; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.4s; }
+        .step-1 .premium-dot, .step-1::before { color: var(--brand-blue); border-color: var(--brand-blue); }
+        .step-2 .premium-dot, .step-2::before { color: var(--brand-yellow); border-color: var(--brand-yellow); }
+        .step-3 .premium-dot, .step-3::before { color: var(--brand-red); border-color: var(--brand-red); }
+        .step-4 .premium-dot, .step-4::before { color: var(--brand-green); border-color: var(--brand-green); }
+        .premium-step:hover .premium-dot { transform: translate(-50%, -50%) scale(1.5); background: currentColor; box-shadow: 0 0 30px currentColor; }
+        .premium-card { flex: 1; position: relative; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 2.5rem 2rem; overflow: hidden; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; display: flex; flex-direction: column; }
+        .premium-step:hover .premium-card { transform: translateY(-15px) scale(1.03); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.2); }
+        .watermark-number { position: absolute; font-family: var(--font-display); font-size: 14rem; font-weight: 800; color: currentColor; opacity: 0.04; pointer-events: none; z-index: 0; transition: all 0.5s ease; bottom: -30px; right: -15px; }
+        .premium-step:hover .watermark-number { opacity: 0.12; transform: scale(1.05); }
+        .premium-content { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.2rem; height: 100%; }
+        .premium-header { display: flex; flex-direction: column; gap: 1rem; }
+        .premium-header h3 { font-size: 1.5rem; color: var(--text-primary); margin: 0; line-height: 1.4; }
+        .premium-desc { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin: 0; flex-grow: 1; }
+        .premium-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); transform: skewX(-20deg); transition: all 0.7s ease; z-index: 0; pointer-events: none; }
+        .premium-step:hover .premium-card::before { left: 200%; }
+        .step-badge { align-self: flex-start; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 600; flex-shrink: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); border: 1px solid currentColor; background: rgba(0,0,0,0.2); }
         /* --- Mind-Blowing Demo Animations --- */
         .demo-container { display: flex; align-items: stretch; gap: 2vw; width: 100%; max-width: 1200px; margin-top: 1rem; }
         .type-text { font-size: 1.25rem; font-weight: 500; color: #FFFFFF; line-height: 1.8; border-left: 4px solid var(--brand-yellow); padding-left: 1.5rem; font-style: italic; }
@@ -334,6 +405,8 @@
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
         <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+        <div class="blob blob-6"></div>
     </div>
     <div class="grid-3d-container">
         <div class="grid-3d"></div>
@@ -358,8 +431,8 @@
 
         <!-- Slide 2: Core Philosophy -->
         <div class="slide" id="slide-2">
-            <h2 class="stagger lang-en">The Daily Struggle</h2>
-            <h2 class="stagger lang-th">ปัญหาที่เจอทุกวัน</h2>
+            <h2 class="stagger lang-en">The <span class="gradient-text">Daily Struggle</span></h2>
+            <h2 class="stagger lang-th">ปัญหาที่<span class="gradient-text">เจอทุกวัน</span></h2>
             
             <p class="lead-text stagger lang-en">Don't let team knowledge disappear when people leave.</p>
             <p class="lead-text stagger lang-th">อย่าปล่อยให้ความรู้หายไปพร้อมกับคน เปลี่ยนบันทึกส่วนตัวให้เป็นระบบ</p>
@@ -388,10 +461,71 @@
             </div>
         </div>
 
-        <!-- Slide 3: Capabilities -->
+        <!-- Slide 3: Foundation -->
         <div class="slide" id="slide-3">
-            <h2 class="stagger lang-en">Core Capabilities</h2>
-            <h2 class="stagger lang-th">Agent ตัวนี้ทำอะไรได้บ้าง?</h2>
+            <h2 class="stagger lang-en">The Foundation</h2>
+            <h2 class="stagger lang-th">ที่มาของ Agent ตัวนี้</h2>
+            
+            <p class="lead-text stagger lang-en">We built this agent based on the concepts from Andrej Karpathy's LLM Wiki.</p>
+            <p class="lead-text stagger lang-th">เราสร้าง Agent ตัวนี้ขึ้นมา โดยอิงจากคอนเซปต์ของ LLM Wiki ของคุณ Andrej Karpathy</p>
+            
+            <div class="grid-2 stagger">
+                <!-- Left: GitHub Gist Reference -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div class="card magnetic-el" style="padding: 0; overflow: hidden; display: flex; flex-direction: row; border-radius: 12px; background: #fff; cursor: pointer;" onclick="window.open('https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f', '_blank')">
+                        <div style="width: 140px; background: #24292e; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+                            <svg height="48" viewBox="0 0 16 16" version="1.1" width="48" fill="#ffffff"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                        </div>
+                        <div style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; flex: 1;">
+                            <h4 style="color: #24292e; font-size: 1.1rem; margin-bottom: 0.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">llm-wiki. GitHub Gist: instantly share code, notes, and snippets.</h4>
+                            <span style="color: #586069; font-size: 0.9rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">gist.github.com</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-spotlight"></div>
+                        <div class="card-content">
+                            <h3 class="lang-en">Core Principles</h3>
+                            <h3 class="lang-th">หลักการทำงานสำคัญ</h3>
+                            <p class="lang-en">We adopted the essential workflows from this concept before building our agent's features.</p>
+                            <p class="lang-th">หลักๆ เราเอาจากเขามาก็คือคอนเซปต์การทำงาน ก่อนที่จะพัฒนาต่อยอดเป็นฟีเจอร์ต่างๆ ของ Agent</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Core Mechanisms -->
+                <div class="arch-list" style="width: 100%;">
+                    <div class="arch-item magnetic-el" style="padding: 1.2rem 1.5rem; gap: 1rem; grid-template-columns: 140px 1fr;">
+                        <div class="arch-tag lang-en" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">Ingest</div>
+                        <div class="arch-tag lang-th" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">Ingest</div>
+                        <div class="arch-desc lang-en">Absorb new information into the knowledge graph.</div>
+                        <div class="arch-desc lang-th">บันทึกข้อมูลและเชื่อมโยงเข้ากับคลังความรู้เดิม</div>
+                    </div>
+                    <div class="arch-item magnetic-el" style="padding: 1.2rem 1.5rem; gap: 1rem; grid-template-columns: 140px 1fr;">
+                        <div class="arch-tag lang-en" style="border-color: rgba(79, 178, 88, 0.4); color: var(--brand-green); background: rgba(79, 178, 88, 0.1);">Query</div>
+                        <div class="arch-tag lang-th" style="border-color: rgba(79, 178, 88, 0.4); color: var(--brand-green); background: rgba(79, 178, 88, 0.1);">Query</div>
+                        <div class="arch-desc lang-en">Retrieve specific answers with exact citations.</div>
+                        <div class="arch-desc lang-th">ค้นหาคำตอบพร้อมอ้างอิงที่มาได้อย่างแม่นยำ</div>
+                    </div>
+                    <div class="arch-item magnetic-el" style="padding: 1.2rem 1.5rem; gap: 1rem; grid-template-columns: 140px 1fr;">
+                        <div class="arch-tag lang-en" style="border-color: rgba(245, 195, 0, 0.4); color: var(--brand-yellow); background: rgba(245, 195, 0, 0.1);">Lint</div>
+                        <div class="arch-tag lang-th" style="border-color: rgba(245, 195, 0, 0.4); color: var(--brand-yellow); background: rgba(245, 195, 0, 0.1);">Lint</div>
+                        <div class="arch-desc lang-en">Continuous maintenance and structural health checks.</div>
+                        <div class="arch-desc lang-th">ตรวจสอบโครงสร้างความรู้และซ่อมแซมจุดที่เสียหาย</div>
+                    </div>
+                    <div class="arch-item magnetic-el" style="padding: 1.2rem 1.5rem; gap: 1rem; grid-template-columns: 140px 1fr;">
+                        <div class="arch-tag lang-en" style="border-color: rgba(227, 75, 53, 0.4); color: var(--brand-red); background: rgba(227, 75, 53, 0.1);">Index & Log</div>
+                        <div class="arch-tag lang-th" style="border-color: rgba(227, 75, 53, 0.4); color: var(--brand-red); background: rgba(227, 75, 53, 0.1);">Index & Log</div>
+                        <div class="arch-desc lang-en">Maintain catalog and chronological activity logs.</div>
+                        <div class="arch-desc lang-th">ทำดัชนีและเก็บประวัติการแก้ไขทั้งหมด (Indexing & Logging)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Capabilities -->
+        <div class="slide" id="slide-4">
+            <h2 class="stagger lang-en">Core <span class="gradient-text">Capabilities</span></h2>
+            <h2 class="stagger lang-th">Agent ตัวนี้<span class="gradient-text">ทำอะไรได้บ้าง?</span></h2>
             
             <p class="lead-text stagger lang-en">Everything you need to manage knowledge, wrapped in a simple chat interface.</p>
             <p class="lead-text stagger lang-th">จัดการคลังความรู้ทั้งหมดผ่านการพิมพ์แชทปกติ ไม่ต้องเรียนรู้เมนูซับซ้อน</p>
@@ -420,54 +554,78 @@
             </div>
         </div>
 
-        <!-- Slide 4: Vault Architecture -> Post-Meeting Workflow -->
-        <div class="slide" id="slide-4">
+        <!-- Slide 5: Vault Architecture -> Post-Meeting Workflow -->
+        <div class="slide" id="slide-5">
             <h2 class="stagger lang-en">The Post-Meeting Workflow</h2>
             <h2 class="stagger lang-th">หลังประชุมแต่ละครั้ง ทำแค่นี้</h2>
             
             <p class="lead-text stagger lang-en">A seamless process from raw meeting notes to a structured knowledge graph.</p>
             <p class="lead-text stagger lang-th">เปลี่ยนโน้ตการประชุม ให้กลายเป็นฐานความรู้ของทีมอย่างง่ายดาย</p>
             
-            <div class="arch-list stagger">
-                <div class="arch-item magnetic-el">
-                    <div class="arch-path lang-en">1. Send Notes</div>
-                    <div class="arch-path lang-th">1. ส่งโน้ตดิบ</div>
-                    <div class="arch-tag lang-en" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">Action</div>
-                    <div class="arch-tag lang-th" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">คุณทำ</div>
-                    <div class="arch-desc lang-en">Paste text or attach files. Add a brief context (e.g. "Weekly CRM meeting").</div>
-                    <div class="arch-desc lang-th">วางข้อความหรือแนบไฟล์เข้าไปได้เลย ไม่ต้องเรียบเรียงเป็นทางการ</div>
+            <div class="premium-timeline stagger">
+                <div class="premium-step step-1 magnetic-el">
+                    <div class="premium-dot"></div>
+                    <div class="premium-card">
+                        <div class="watermark-number" style="color: var(--brand-blue);">1</div>
+                        <div class="premium-content">
+                            <div class="premium-header">
+                                <div class="step-badge" style="color: var(--brand-blue);"><span class="lang-en">Action</span><span class="lang-th">คุณทำ</span></div>
+                                <div><h3 class="lang-en">Send Notes</h3><h3 class="lang-th">ส่งโน้ตดิบ</h3></div>
+                            </div>
+                            <p class="premium-desc lang-en">Paste text or attach files. Add a brief context.</p>
+                            <p class="premium-desc lang-th">วางข้อความหรือแนบไฟล์เข้าไปได้เลย ไม่ต้องเรียบเรียง</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="arch-item magnetic-el">
-                    <div class="arch-path lang-en">2. AI Proposes Plan</div>
-                    <div class="arch-path lang-th">2. ระบบเสนอแผน</div>
-                    <div class="arch-tag lang-en" style="border-color: rgba(245, 195, 0, 0.4); color: var(--brand-yellow); background: rgba(245, 195, 0, 0.1);">AI</div>
-                    <div class="arch-tag lang-th" style="border-color: rgba(245, 195, 0, 0.4); color: var(--brand-yellow); background: rgba(245, 195, 0, 0.1);">AI ทำ</div>
-                    <div class="arch-desc lang-en">The system searches past records and proposes what pages to update.</div>
-                    <div class="arch-desc lang-th">ระบบจะค้นว่าเคยมีบันทึกเรื่องนี้ไหม และเสนอสรุปว่าจะเก็บอะไรบ้างให้ดูก่อน</div>
+                <div class="premium-step step-2 magnetic-el">
+                    <div class="premium-dot"></div>
+                    <div class="premium-card">
+                        <div class="watermark-number" style="color: var(--brand-yellow);">2</div>
+                        <div class="premium-content">
+                            <div class="premium-header">
+                                <div class="step-badge" style="color: var(--brand-yellow);"><span class="lang-en">AI</span><span class="lang-th">AI ทำ</span></div>
+                                <div><h3 class="lang-en">AI Proposes Plan</h3><h3 class="lang-th">ระบบเสนอแผน</h3></div>
+                            </div>
+                            <p class="premium-desc lang-en">The system searches past records and proposes pages to update.</p>
+                            <p class="premium-desc lang-th">ระบบจะค้นว่าเคยมีบันทึกไหม และเสนอสรุปว่าจะเก็บอะไรบ้าง</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="arch-item magnetic-el">
-                    <div class="arch-path lang-en">3. You Approve</div>
-                    <div class="arch-path lang-th">3. อนุมัติ</div>
-                    <div class="arch-tag lang-en" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">Action</div>
-                    <div class="arch-tag lang-th" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">คุณทำ</div>
-                    <div class="arch-desc lang-en">Review the plan, type "Approve", and click the confirm button.</div>
-                    <div class="arch-desc lang-th">คุณอ่านแผนที่ AI เสนอ พิมพ์ "อนุมัติ" และกดยืนยันในกล่อง UI ที่เด้งขึ้นมา</div>
+                <div class="premium-step step-3 magnetic-el">
+                    <div class="premium-dot"></div>
+                    <div class="premium-card">
+                        <div class="watermark-number" style="color: var(--brand-red);">3</div>
+                        <div class="premium-content">
+                            <div class="premium-header">
+                                <div class="step-badge" style="color: var(--brand-red);"><span class="lang-en">Action</span><span class="lang-th">คุณทำ</span></div>
+                                <div><h3 class="lang-en">You Approve</h3><h3 class="lang-th">อนุมัติ</h3></div>
+                            </div>
+                            <p class="premium-desc lang-en">Review the plan, type "Approve", and click confirm.</p>
+                            <p class="premium-desc lang-th">อ่านแผนที่ AI เสนอ พิมพ์ "อนุมัติ" และกดยืนยันในกล่อง UI</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="arch-item magnetic-el">
-                    <div class="arch-path lang-en">4. Saved & Ready</div>
-                    <div class="arch-path lang-th">4. บันทึกเสร็จสิ้น</div>
-                    <div class="arch-tag lang-en" style="border-color: rgba(79, 178, 88, 0.4); color: var(--brand-green); background: rgba(79, 178, 88, 0.1);">Done</div>
-                    <div class="arch-tag lang-th" style="border-color: rgba(79, 178, 88, 0.4); color: var(--brand-green); background: rgba(79, 178, 88, 0.1);">สำเร็จ</div>
-                    <div class="arch-desc lang-en">Knowledge is permanently saved and instantly searchable by the whole team.</div>
-                    <div class="arch-desc lang-th">ข้อมูลถูกบันทึกเสร็จสมบูรณ์ ทุกคนในทีมสามารถแชทเข้ามาถามหาความรู้ได้ทันที</div>
+                <div class="premium-step step-4 magnetic-el">
+                    <div class="premium-dot"></div>
+                    <div class="premium-card">
+                        <div class="watermark-number" style="color: var(--brand-green);">4</div>
+                        <div class="premium-content">
+                            <div class="premium-header">
+                                <div class="step-badge" style="color: var(--brand-green);"><span class="lang-en">Done</span><span class="lang-th">สำเร็จ</span></div>
+                                <div><h3 class="lang-en">Saved & Ready</h3><h3 class="lang-th">บันทึกเสร็จสิ้น</h3></div>
+                            </div>
+                            <p class="premium-desc lang-en">Knowledge is permanently saved and instantly searchable.</p>
+                            <p class="premium-desc lang-th">ข้อมูลบันทึกสมบูรณ์ ทุกคนในทีมค้นหาความรู้ได้ทันที</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 5: Cross Page Update Demo -->
-        <div class="slide" id="slide-5">
-            <h2 class="stagger lang-en">Real-Time Knowledge Synthesis</h2>
-            <h2 class="stagger lang-th">อ่าน วิเคราะห์ และคำนวณแบบ Real-time</h2>
+        <!-- Slide 6: Cross Page Update Demo -->
+        <div class="slide" id="slide-6">
+            <h2 class="stagger lang-en">Real-Time <span class="gradient-text">Knowledge Synthesis</span></h2>
+            <h2 class="stagger lang-th">อ่าน วิเคราะห์ และคำนวณแบบ <span class="gradient-text">Real-time</span></h2>
             
             <p class="lead-text stagger lang-en">Watch the engine read a raw note, calculate the impact, and update the graph dynamically.</p>
             <p class="lead-text stagger lang-th">อึ้งไปเลย! ระบบไม่ทำงานแบบไฟล์โง่ๆ แต่มันสามารถ "อ่าน ทำความเข้าใจ คำนวณ และอัปเดต" ข้อมูลให้เอง</p>
@@ -518,8 +676,8 @@
             </div>
         </div>
         
-        <!-- Slide 6: Review & Edit -->
-        <div class="slide" id="slide-6">
+        <!-- Slide 7: Review & Edit -->
+        <div class="slide" id="slide-7">
             <h2 class="stagger lang-en">Total Control & Review</h2>
             <h2 class="stagger lang-th">ปรับแผนก่อนอนุมัติได้</h2>
             
@@ -540,8 +698,50 @@
             </div>
         </div>
 
-        <!-- Slide 7: Secretary Governance -->
-        <div class="slide" id="slide-7">
+        <!-- Slide 8: Benefits -->
+        <div class="slide" id="slide-8">
+            <h2 class="stagger lang-en">The Cumulative Advantage</h2>
+            <h2 class="stagger lang-th">ประโยชน์ที่จะได้รับ</h2>
+            
+            <p class="lead-text stagger lang-en">From personal notes to a permanent team asset. Knowledge that compounds over time with full transparency.</p>
+            <p class="lead-text stagger lang-th">เปลี่ยนความรู้ที่เคยติดอยู่กับตัวบุคคล ให้กลายเป็นสมบัติของทีมที่สะสมและเติบโตอย่างโปร่งใส</p>
+            
+            <div class="grid-2 stagger">
+                <div class="card magnetic-el" style="grid-column: span 2; background: linear-gradient(135deg, rgba(66, 133, 244, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); border-color: rgba(66, 133, 244, 0.2);">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon" style="background: rgba(66, 133, 244, 0.2); color: var(--brand-blue);"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                        <h3 class="lang-en">Team Asset, Not Personal Files</h3>
+                        <h3 class="lang-th">จากบันทึกส่วนตัว สู่ความรู้ทั้งทีม</h3>
+                        <p class="lang-en">Stop wasting time searching or summarizing past decisions. Knowledge previously trapped with one person becomes a team asset everyone can query without asking for files. Even if the person who wrote the notes leaves, the knowledge remains.</p>
+                        <p class="lang-th">ประหยัดเวลาสรุปและค้นหาย้อนหลัง — ความรู้ที่เคยติดอยู่กับตัวเลขาคนเดียว กลายเป็นสมบัติของทีมที่คนอื่นถามหาเจอได้เอง โดยไม่ต้องส่งไฟล์ให้ใคร ต่อให้คนที่จดวันนั้นลาหรือเปลี่ยนงานไปแล้ว ความรู้ก็ยังอยู่</p>
+                    </div>
+                </div>
+                <div class="card magnetic-el">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon" style="background: rgba(245, 195, 0, 0.2); color: var(--brand-yellow);"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                        <h3 class="lang-en">Cumulative Knowledge</h3>
+                        <h3 class="lang-th">สะสมความรู้ ไม่เริ่มนับหนึ่งใหม่</h3>
+                        <p class="lang-en">The more you ingest, the more it compounds. Meeting #20 of a project benefits from the previous 19 meetings because the project page has been continuously updated. You never start from scratch.</p>
+                        <p class="lang-th">ยิ่งบันทึกบ่อย ยิ่งสะสม — ประชุมครั้งที่ 20 ของโครงการเดียวกันจะได้ประโยชน์จากทั้ง 19 ครั้งก่อนหน้า เพราะหน้าโครงการถูกปรับปรุงสะสมมาตลอด ไม่ใช่เริ่มนับหนึ่งใหม่ทุกครั้ง</p>
+                    </div>
+                </div>
+                <div class="card magnetic-el">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon" style="background: rgba(79, 178, 88, 0.2); color: var(--brand-green);"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+                        <h3 class="lang-en">100% Transparency</h3>
+                        <h3 class="lang-th">โปร่งใส ตรวจสอบประวัติได้</h3>
+                        <p class="lang-en">Every action leaves a clear audit log. You can always check who ingested a specific file, who approved the changes, and when. Transparency is built into the workflow.</p>
+                        <p class="lang-th">มี record ชัดเจนว่ามีชื่อใครเป็นคน Ingest ไฟล์นี้เข้ามา และใครเป็นคนอนุมัติอะไรไว้เมื่อไหร่ สามารถตรวจสอบย้อนหลังได้เสมอ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Secretary Governance -->
+        <div class="slide" id="slide-9">
             <h2 class="stagger lang-en">Security & Limitations</h2>
             <h2 class="stagger lang-th">ข้อควรระวังสำหรับงานเลขา</h2>
             
