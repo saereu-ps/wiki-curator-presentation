@@ -335,7 +335,7 @@
         .premium-step:hover .premium-card::before { left: 200%; }
         .step-badge { align-self: flex-start; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 600; flex-shrink: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); border: 1px solid currentColor; background: rgba(0,0,0,0.2); }
         /* --- Mind-Blowing Demo Animations --- */
-        .demo-container { display: flex; align-items: stretch; gap: 2vw; width: 100%; max-width: 1200px; margin-top: 1rem; }
+        .demo-container { display: flex; align-items: center; gap: 2vw; width: 100%; max-width: 1200px; margin-top: 1rem; }
         .type-text { font-size: 1.25rem; font-weight: 500; color: #FFFFFF; line-height: 1.8; border-left: 4px solid var(--brand-yellow); padding-left: 1.5rem; font-style: italic; }
         
         .terminal-text { font-family: var(--font-mono); font-size: 1rem; line-height: 2.2; color: var(--text-secondary); }
@@ -361,27 +361,30 @@
 
         /* --- UI Controls --- */
         .controls {
-            position: fixed; bottom: 3rem; left: 0; right: 0;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 4vw; z-index: 100; pointer-events: none;
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            display: flex; justify-content: center; align-items: center; gap: 2rem;
+            padding: 0.8rem 1.5rem; z-index: 100; pointer-events: auto;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
         }
 
         .nav-btn {
-            pointer-events: auto; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.15); color: var(--text-primary);
-            width: 60px; height: 60px; border-radius: 50%;
+            background: transparent; border: none; color: var(--text-primary);
+            width: 44px; height: 44px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            will-change: transform;
-            backdrop-filter: blur(10px);
+            transition: background 0.3s, box-shadow 0.3s, color 0.3s, transform 0.2s;
+            cursor: pointer;
         }
         .nav-btn:hover:not(:disabled) { 
-            background: rgba(255,255,255,0.15); border-color: var(--brand-blue); color: #FFFFFF; 
-            box-shadow: 0 0 25px rgba(66, 133, 244, 0.4), inset 0 0 10px rgba(66, 133, 244, 0.2);
+            background: rgba(255,255,255,0.1); color: var(--brand-blue); 
+            box-shadow: 0 0 15px rgba(66, 133, 244, 0.2);
+            transform: scale(1.1);
         }
-        .nav-btn:disabled { opacity: 0.3; pointer-events: none; box-shadow: none;}
-        .nav-btn svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .nav-btn:disabled { opacity: 0.3; pointer-events: none; }
+        .nav-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         
         /* --- Fullscreen Button --- */
         .fullscreen-btn {
@@ -517,7 +520,7 @@
                         <h3 class="lang-en">The Solution</h3>
                         <h3 class="lang-th">ทางแก้</h3>
                         <p class="lang-en">Dump raw notes directly into the chat. The system links them to projects and people automatically. Knowledge becomes a team asset everyone can query without asking you.</p>
-                        <p class="lang-th">ส่งโน้ตดิบเข้าไปตรงๆ ไม่ต้องเรียบเรียง ระบบจะอ่านและเชื่อมโยงกับหน้าโครงการให้เอง ความรู้กลายเป็นสมบัติของทีมที่คนอื่นถามหาเจอได้เอง</p>
+                        <p class="lang-th">ส่งบันทึกการประชุมเข้าไปโดยตรง ไม่ต้องเรียบเรียง ระบบจะอ่านและเชื่อมโยงกับหน้าโครงการให้เอง ความรู้กลายเป็นสมบัติของทีมที่คนอื่นถามหาเจอได้เอง</p>
                     </div>
                 </div>
             </div>
@@ -623,7 +626,7 @@
                 <div class="card">
                     <div class="card-spotlight"></div>
                     <div class="card-content">
-                        <div class="card-icon" style="background: linear-gradient(135deg, rgba(245, 195, 0, 0.2) 0%, rgba(79, 178, 88, 0.2) 100%); color: var(--brand-yellow);"><svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="20" y2="4"></line><line x1="4" y1="4" x2="20" y2="20"></line></svg></div>
+                        <div class="card-icon" style="background: linear-gradient(135deg, rgba(245, 195, 0, 0.2) 0%, rgba(79, 178, 88, 0.2) 100%); color: var(--brand-yellow);"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
                         <h3 class="lang-en">Synthesize & Lint</h3>
                         <h3 class="lang-th">สรุปข้อมูล & ตรวจสุขภาพ</h3>
                         <p class="lang-en"><strong>Synthesize:</strong> Compare projects or create timelines across multiple pages.<br><br><strong>Lint:</strong> Scan the vault for broken links or thin content without modifying anything.</p>
@@ -636,7 +639,7 @@
         <!-- Slide 5: Vault Architecture -> Post-Meeting Workflow -->
         <div class="slide" id="slide-5">
             <h2 class="stagger lang-en">The Post-Meeting Workflow</h2>
-            <h2 class="stagger lang-th">หลังประชุมแต่ละครั้ง ทำแค่นี้</h2>
+            <h2 class="stagger lang-th">ขั้นตอนการทำงานหลังจบการประชุม</h2>
             
             <p class="lead-text stagger lang-en">A seamless process from raw meeting notes to a structured knowledge graph.</p>
             <p class="lead-text stagger lang-th">เปลี่ยนโน้ตการประชุม ให้กลายเป็นฐานความรู้ของทีมอย่างง่ายดาย</p>
@@ -649,7 +652,7 @@
                         <div class="premium-content">
                             <div class="premium-header">
                                 <div class="step-badge" style="color: var(--brand-blue);"><span class="lang-en">Action</span><span class="lang-th">คุณทำ</span></div>
-                                <div><h3 class="lang-en">Send Notes</h3><h3 class="lang-th">ส่งโน้ตดิบ</h3></div>
+                                <div><h3 class="lang-en">Send Notes</h3><h3 class="lang-th">ส่งบันทึกการประชุม</h3></div>
                             </div>
                             <p class="premium-desc lang-en">Paste text or attach files. Add a brief context.</p>
                             <p class="premium-desc lang-th">วางข้อความหรือแนบไฟล์เข้าไปได้เลย ไม่ต้องเรียบเรียง</p>
@@ -666,7 +669,7 @@
                                 <div><h3 class="lang-en">AI Proposes Plan</h3><h3 class="lang-th">ระบบเสนอแผน</h3></div>
                             </div>
                             <p class="premium-desc lang-en">The system searches past records and proposes pages to update.</p>
-                            <p class="premium-desc lang-th">ระบบจะค้นว่าเคยมีบันทึกไหม และเสนอสรุปว่าจะเก็บอะไรบ้าง</p>
+                            <p class="premium-desc lang-th">ระบบจะค้นว่าเคยมีบันทึกหรือหน้าโครงการเดิมไหม และเสนอแผนอัปเดตข้อมูล</p>
                         </div>
                     </div>
                 </div>
@@ -680,7 +683,7 @@
                                 <div><h3 class="lang-en">You Approve</h3><h3 class="lang-th">อนุมัติ</h3></div>
                             </div>
                             <p class="premium-desc lang-en">Review the plan, type "Approve", and click confirm.</p>
-                            <p class="premium-desc lang-th">อ่านแผนที่ AI เสนอ พิมพ์ "อนุมัติ" และกดยืนยันในกล่อง UI</p>
+                            <p class="premium-desc lang-th">ตรวจสอบแผนที่ AI เสนอ พิมพ์ "อนุมัติ" และกดยืนยันในกล่อง UI</p>
                         </div>
                     </div>
                 </div>
@@ -707,7 +710,7 @@
             <h2 class="stagger lang-th">อ่าน วิเคราะห์ และคำนวณแบบ <span class="gradient-text">Real-time</span></h2>
             
             <p class="lead-text stagger lang-en">Watch the engine read a raw note, calculate the impact, and update the graph dynamically.</p>
-            <p class="lead-text stagger lang-th">อึ้งไปเลย! ระบบไม่ทำงานแบบไฟล์โง่ๆ แต่มันสามารถ "อ่าน ทำความเข้าใจ คำนวณ และอัปเดต" ข้อมูลให้เอง</p>
+            <p class="lead-text stagger lang-th">ระบบไม่เป็นเพียงแค่ไฟล์ธรรมดา แต่มันสามารถ "อ่าน ทำความเข้าใจ คำนวณ และอัปเดต" ข้อมูลให้เองแบบอัตโนมัติ</p>
             
             <div class="demo-container stagger">
                 <!-- Left: Raw Input (Chat UI) -->
@@ -782,7 +785,7 @@
                         <h3 class="lang-en">Edit Before Saving</h3>
                         <h3 class="lang-th">สั่งแก้แผนก่อนกดอนุมัติ</h3>
                         <p class="lang-en">Review the pages the AI plans to create or modify. If it includes sensitive personal chatter, simply reply: <em>"Skip the salary discussion, only save the project changes"</em>. The AI will revise the plan and ask for approval again.</p>
-                        <p class="lang-th">ก่อนอนุมัติ ให้ดูว่าระบบจะสร้างหน้าใหม่ หรือแก้หน้าเดิมอย่างไร ถ้ามีเรื่องส่วนตัวหลุดเข้าไป คุณสามารถสั่ง <em>"ตัดส่วนเรื่องเงินเดือนออก ไม่ต้องเก็บ"</em> ระบบจะทำแผนมาให้ดูใหม่ การอนุมัติแผนเดิมจะไม่ตกทอดมาแผนใหม่</p>
+                        <p class="lang-th">ก่อนอนุมัติ ให้ดูว่าระบบจะสร้างหน้าใหม่ หรือแก้หน้าเดิมอย่างไร ถ้ามีเรื่องส่วนตัวหลุดเข้าไป คุณสามารถสั่ง <em>"ตัดส่วนเรื่องเงินเดือนออก ไม่ต้องเก็บ"</em> ระบบจะทำแผนมาให้ดูใหม่ โดยที่การอนุมัติครั้งก่อนจะไม่ตกทอดมา</p>
                     </div>
                 </div>
             </div>
@@ -846,7 +849,7 @@
                         <h3 class="lang-en">Two-Step Approval</h3>
                         <h3 class="lang-th">การอนุมัติมีสองขั้น</h3>
                         <p class="lang-en">Typing "Approve" is not enough. You must explicitly click the confirm button in the UI. Typing "Save without asking" will still pause the system to wait for your confirmation.</p>
-                        <p class="lang-th">พิมพ์ "อนุมัติ" อย่างเดียวยังไม่พอ ต้องกดยืนยันในกล่องที่เด้งขึ้นมาด้วยเสมอ ต่อให้สั่งระบบว่า "บันทึกเลยไม่ต้องถาม" ระบบก็จะหยุดรอให้คุณกดปุ่มยืนยันอยู่ดี</p>
+                        <p class="lang-th">พิมพ์ "อนุมัติ" อย่างเดียวยังไม่พอ ต้องกดยืนยันในกล่องที่เด้งขึ้นมาด้วยเสมอ ต่อให้สั่งระบบว่า "บันทึกเลยไม่ต้องถาม" ระบบก็จะหยุดรอให้คุณกดปุ่มยืนยันอยู่ดี เพื่อป้องกันความผิดพลาด</p>
                     </div>
                 </div>
                 <div class="card">
