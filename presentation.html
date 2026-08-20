@@ -540,7 +540,7 @@
                             <div style="width: 12px; height: 12px; border-radius: 50%; background: #FF5F56;"></div>
                             <div style="width: 12px; height: 12px; border-radius: 50%; background: #FFBD2E;"></div>
                             <div style="width: 12px; height: 12px; border-radius: 50%; background: #27C93F;"></div>
-                            <div style="margin-left: 12px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary);">gist.github.com/karpathy/...</div>
+                            <div style="margin-left: 12px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center;">gist.github.com/karpathy/...</div>
                         </div>
                         <!-- Content -->
                         <div style="padding: 2rem; display: flex; align-items: center; gap: 2rem;">
@@ -563,40 +563,39 @@
                 </div>
                 
                 <!-- Right: Core Mechanisms 2x2 Glowing Grid -->
-                <div class="grid-2" style="width: 100%; gap: 1.5rem; align-items: start;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 1rem; align-items: stretch;">
                     <!-- Ingest -->
-                    <div class="card magnetic-el" style="padding: 1.5rem; background: rgba(66, 133, 244, 0.05); border: 1px solid rgba(66, 133, 244, 0.2);">
-                        <div class="card-icon" style="width: 32px; height: 32px; margin-bottom: 1rem; color: var(--brand-blue);"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></div>
-                        <h4 class="lang-en" style="color: var(--brand-blue); margin-bottom: 0.5rem;">Ingest</h4>
-                        <h4 class="lang-th" style="color: var(--brand-blue); margin-bottom: 0.5rem;">บันทึก (Ingest)</h4>
-                        <p class="lang-en" style="font-size: 0.9rem; color: var(--text-secondary);">Absorb new information into the knowledge graph.</p>
-                        <p class="lang-th" style="font-size: 0.9rem; color: var(--text-secondary);">ดูดซับข้อมูลใหม่เข้าสู่คลังความรู้</p>
+                    <div class="card magnetic-el" style="padding: 1.2rem; background: rgba(66, 133, 244, 0.05); border: 1px solid rgba(66, 133, 244, 0.2); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                        <div class="card-icon" style="width: 28px; height: 28px; margin-bottom: 0.8rem; color: var(--brand-blue);"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></div>
+                        <h4 class="lang-en" style="color: var(--brand-blue); margin-bottom: 0.4rem; font-size: 1.05rem;">Ingest</h4>
+                        <h4 class="lang-th" style="color: var(--brand-blue); margin-bottom: 0.4rem; font-size: 1.05rem;">บันทึก (Ingest)</h4>
+                        <p class="lang-en" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">Absorb new information into the knowledge graph.</p>
+                        <p class="lang-th" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">ดูดซับข้อมูลใหม่เข้าสู่คลังความรู้</p>
                     </div>
                     <!-- Query -->
-                    <div class="card magnetic-el" style="padding: 1.5rem; background: rgba(79, 178, 88, 0.05); border: 1px solid rgba(79, 178, 88, 0.2);">
-                        <div class="card-icon" style="width: 32px; height: 32px; margin-bottom: 1rem; color: var(--brand-green);"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-                        <h4 class="lang-en" style="color: var(--brand-green); margin-bottom: 0.5rem;">Query</h4>
-                        <h4 class="lang-th" style="color: var(--brand-green); margin-bottom: 0.5rem;">ค้นหา (Query)</h4>
-                        <p class="lang-en" style="font-size: 0.9rem; color: var(--text-secondary);">Retrieve specific answers with exact citations.</p>
-                        <p class="lang-th" style="font-size: 0.9rem; color: var(--text-secondary);">ดึงคำตอบพร้อมอ้างอิงอย่างแม่นยำ</p>
+                    <div class="card magnetic-el" style="padding: 1.2rem; background: rgba(79, 178, 88, 0.05); border: 1px solid rgba(79, 178, 88, 0.2); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                        <div class="card-icon" style="width: 28px; height: 28px; margin-bottom: 0.8rem; color: var(--brand-green);"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                        <h4 class="lang-en" style="color: var(--brand-green); margin-bottom: 0.4rem; font-size: 1.05rem;">Query</h4>
+                        <h4 class="lang-th" style="color: var(--brand-green); margin-bottom: 0.4rem; font-size: 1.05rem;">ค้นหา (Query)</h4>
+                        <p class="lang-en" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">Retrieve specific answers with citations.</p>
+                        <p class="lang-th" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">ดึงคำตอบพร้อมอ้างอิงอย่างแม่นยำ</p>
                     </div>
                     <!-- Lint -->
-                    <div class="card magnetic-el" style="padding: 1.5rem; background: rgba(245, 195, 0, 0.05); border: 1px solid rgba(245, 195, 0, 0.2);">
-                        <div class="card-icon" style="width: 32px; height: 32px; margin-bottom: 1rem; color: var(--brand-yellow);"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-                        <h4 class="lang-en" style="color: var(--brand-yellow); margin-bottom: 0.5rem;">Lint</h4>
-                        <h4 class="lang-th" style="color: var(--brand-yellow); margin-bottom: 0.5rem;">ตรวจสอบ (Lint)</h4>
-                        <p class="lang-en" style="font-size: 0.9rem; color: var(--text-secondary);">Continuous maintenance and health checks.</p>
-                        <p class="lang-th" style="font-size: 0.9rem; color: var(--text-secondary);">ตรวจสุขภาพความรู้อย่างต่อเนื่อง</p>
+                    <div class="card magnetic-el" style="padding: 1.2rem; background: rgba(245, 195, 0, 0.05); border: 1px solid rgba(245, 195, 0, 0.2); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                        <div class="card-icon" style="width: 28px; height: 28px; margin-bottom: 0.8rem; color: var(--brand-yellow);"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                        <h4 class="lang-en" style="color: var(--brand-yellow); margin-bottom: 0.4rem; font-size: 1.05rem;">Lint</h4>
+                        <h4 class="lang-th" style="color: var(--brand-yellow); margin-bottom: 0.4rem; font-size: 1.05rem;">ตรวจสอบ (Lint)</h4>
+                        <p class="lang-en" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">Continuous maintenance and health checks.</p>
+                        <p class="lang-th" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">ตรวจสุขภาพความรู้อย่างต่อเนื่อง</p>
                     </div>
                     <!-- Index -->
-                    <div class="card magnetic-el" style="padding: 1.5rem; background: rgba(227, 75, 53, 0.05); border: 1px solid rgba(227, 75, 53, 0.2);">
-                        <div class="card-icon" style="width: 32px; height: 32px; margin-bottom: 1rem; color: var(--brand-red);"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div>
-                        <h4 class="lang-en" style="color: var(--brand-red); margin-bottom: 0.5rem;">Index & Log</h4>
-                        <h4 class="lang-th" style="color: var(--brand-red); margin-bottom: 0.5rem;">จัดดัชนี (Index)</h4>
-                        <p class="lang-en" style="font-size: 0.9rem; color: var(--text-secondary);">Maintain catalog and activity logs.</p>
-                        <p class="lang-th" style="font-size: 0.9rem; color: var(--text-secondary);">เก็บประวัติและทำดัชนีทั้งหมด</p>
+                    <div class="card magnetic-el" style="padding: 1.2rem; background: rgba(227, 75, 53, 0.05); border: 1px solid rgba(227, 75, 53, 0.2); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                        <div class="card-icon" style="width: 28px; height: 28px; margin-bottom: 0.8rem; color: var(--brand-red);"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div>
+                        <h4 class="lang-en" style="color: var(--brand-red); margin-bottom: 0.4rem; font-size: 1.05rem;">Index & Log</h4>
+                        <h4 class="lang-th" style="color: var(--brand-red); margin-bottom: 0.4rem; font-size: 1.05rem;">จัดดัชนี (Index)</h4>
+                        <p class="lang-en" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">Maintain catalog and activity logs.</p>
+                        <p class="lang-th" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">เก็บประวัติและทำดัชนีทั้งหมด</p>
                     </div>
-                </div>
             </div>
         </div>
 
@@ -714,9 +713,9 @@
                     <div style="align-self: flex-start; margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.85rem; font-family: var(--font-mono); display: flex; align-items: center; gap: 8px;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> MEETING_NOTE.TXT
                     </div>
-                    <div style="background: var(--brand-blue); color: #fff; padding: 1.2rem 1.5rem; border-radius: 20px 20px 20px 4px; box-shadow: 0 10px 25px rgba(66, 133, 244, 0.3); font-size: 1.1rem; line-height: 1.5; position: relative; z-index: 2;">
-                        <span class="type-text lang-en" style="display: block;">"CEO ordered a 30% budget cut for the CRM project immediately, down from the original 5M THB."</span>
-                        <span class="type-text lang-th" style="display: block;">"บอสสั่งหั่นงบโปรเจกต์ CRM ลง 30% ทันที จากเดิมที่เคยตั้งไว้ 5 ล้านบาท"</span>
+                    <div style="background: var(--brand-blue); color: #fff; padding: 1.2rem 1.5rem; border-radius: 20px 20px 20px 4px; box-shadow: 0 10px 25px rgba(66, 133, 244, 0.3); font-size: 1.1rem; line-height: 1.5; position: relative; z-index: 2; margin-top: auto;">
+                        <span class="lang-en" style="display: block; font-style: normal;">"CEO ordered a 30% budget cut for the CRM project immediately, down from the original 5M THB."</span>
+                        <span class="lang-th" style="display: block; font-style: normal;">"บอสสั่งหั่นงบโปรเจกต์ CRM ลง 30% ทันที จากเดิมที่เคยตั้งไว้ 5 ล้านบาท"</span>
                     </div>
                 </div>
                 
@@ -749,16 +748,16 @@
                             <div class="line delay-2"><span>></span> Current Budget: <span class="highlight-red">5,000,000 THB</span> (Ref: Q1 Plan)</div>
                             <div class="line delay-3"><span>></span> Calculating impact: 5,000,000 - 30%...</div>
                             <div class="line delay-4"><span>></span> New Budget: <span class="highlight-green">3,500,000 THB</span></div>
-                            <div class="line delay-5 warning" style="background: rgba(245, 195, 0, 0.1); border: 1px solid rgba(245, 195, 0, 0.3); padding: 0.5rem; margin: 0.5rem 0; border-radius: 4px;"><span>[!]</span> CONTRADICTION LOGGED: Budget cut from Q1 baseline.</div>
-                            <div class="line delay-6 success" style="background: rgba(79, 178, 88, 0.1); border: 1px solid rgba(79, 178, 88, 0.3); padding: 0.5rem; border-radius: 4px;"><span>[✓]</span> Project Page Updated Automatically.</div>
+                            <div class="line delay-5 warning"><span>[!]</span> CONTRADICTION LOGGED: Budget cut from Q1 baseline.</div>
+                            <div class="line delay-6 success"><span>[✓]</span> Project Page Updated Automatically.</div>
                         </div>
                         <div class="terminal-text lang-th" style="position: relative; z-index: 2;">
                             <div class="line delay-1"><span>></span> ค้นหาข้อมูลเดิม: [แฟ้มโปรเจกต์_CRM.md]...</div>
                             <div class="line delay-2"><span>></span> งบประมาณเดิม: <span class="highlight-red">5,000,000 บาท</span> (อ้างอิง: แผน Q1)</div>
                             <div class="line delay-3"><span>></span> กำลังคำนวณ: ลดลง 30% จาก 5,000,000...</div>
                             <div class="line delay-4"><span>></span> งบประมาณใหม่: <span class="highlight-green">3,500,000 บาท</span></div>
-                            <div class="line delay-5 warning" style="background: rgba(245, 195, 0, 0.1); border: 1px solid rgba(245, 195, 0, 0.3); padding: 0.5rem; margin: 0.5rem 0; border-radius: 4px;"><span>[!]</span> บันทึกข้อขัดแย้ง: ตัวเลขงบลดลงจากที่เคยอนุมัติไว้ใน Q1</div>
-                            <div class="line delay-6 success" style="background: rgba(79, 178, 88, 0.1); border: 1px solid rgba(79, 178, 88, 0.3); padding: 0.5rem; border-radius: 4px;"><span>[✓]</span> อัปเดตตัวเลขในหน้าโปรเจกต์เรียบร้อยแล้ว</div>
+                            <div class="line delay-5 warning"><span>[!]</span> บันทึกข้อขัดแย้ง: ตัวเลขงบลดลงจากที่เคยอนุมัติไว้ใน Q1</div>
+                            <div class="line delay-6 success"><span>[✓]</span> อัปเดตตัวเลขในหน้าโปรเจกต์เรียบร้อยแล้ว</div>
                         </div>
                     </div>
                 </div>
