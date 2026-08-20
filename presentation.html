@@ -200,9 +200,8 @@
         h1 { font-size: clamp(4rem, 8vw, 7rem); line-height: 1.1; margin-bottom: 1rem; }
         
         .gradient-text {
-            background: linear-gradient(135deg, #A7B8FF 0%, #E2D4FF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-red) 50%, var(--brand-yellow) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: gradientFlow 3s ease infinite;
         }
@@ -253,7 +252,7 @@
             cursor: pointer; transition: color 0.3s;
         }
 
-        .lang-toggle-btn.active { color: #FFFFFF; }
+        .lang-toggle-btn.active { color: #FFFFFF; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
         /* --- Interactive 3D Cards --- */
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; width: 100%; max-width: 1200px; }
@@ -264,9 +263,10 @@
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--glass-border);
             padding: 3rem; border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.15s ease-out, border-color 0.2s ease;
+            transition: transform 0.15s ease-out, border-color 0.2s ease, box-shadow 0.2s ease;
             overflow: hidden;
             will-change: transform;
         }
@@ -286,7 +286,7 @@
             background: linear-gradient(135deg, rgba(66, 133, 244, 0.15) 0%, rgba(79, 178, 88, 0.15) 100%);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 16px; display: flex; align-items: center; justify-content: center;
-            color: var(--brand-blue);
+            color: var(--brand-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         .card-icon svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 
@@ -301,10 +301,11 @@
             display: grid; grid-template-columns: 200px 120px 1fr; gap: 2rem;
             padding: 1.5rem 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
             border-radius: 16px; align-items: center; backdrop-filter: blur(20px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             transition: all 0.2s ease-out;
             will-change: transform;
         }
-        .arch-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+        .arch-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
         .arch-path { font-family: var(--font-mono); font-size: 1.1rem; color: var(--brand-green); font-weight: 600;}
         .arch-tag { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.8rem; border-radius: 4px; text-align: center; border: 1px solid rgba(66, 133, 244, 0.3); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1); font-weight: 600; }
         .arch-desc { color: var(--text-secondary); font-size: 1.05rem; font-weight: 400; }
@@ -312,6 +313,15 @@
         /* --- High-End Horizontal Workflow Timeline --- */
         .premium-timeline { position: relative; width: 100%; max-width: 1300px; margin: 4rem auto 0; display: flex; flex-direction: row; gap: 2rem; padding-top: 70px; }
         .premium-timeline::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--brand-blue), var(--brand-yellow), var(--brand-red), var(--brand-green)); opacity: 0.3; z-index: 0; }
+        .premium-timeline::after { content: ''; position: absolute; top: 18px; left: 0; width: 100px; height: 6px; background: #fff; border-radius: 10px; box-shadow: 0 0 20px 5px rgba(255,255,255,0.8); z-index: 1; animation: scanline-h 4s ease-in-out infinite alternate; }
+        @keyframes scanline-h { 0% { left: 0%; } 100% { left: calc(100% - 100px); } }
+        .premium-step { flex: 1; position: relative; z-index: 2; display: flex; flex-direction: column; }
+        .premium-step::before { content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: currentColor; opacity: 0.3; z-index: 0; }
+        .premium-dot { position: absolute; top: -50px; left: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 50%; background: var(--bg-base); border: 4px solid var(--text-primary); box-shadow: 0 0 15px currentColor; z-index: 3; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.4s; }
+        .step-1 .premium-dot, .step-1::before { color: var(--brand-blue); border-color: var(--brand-blue); }
+        .step-2 .premium-dot, .step-2::before { color: var(--brand-yellow); border-color: var(--brand-yellow); }
+        .step-3 .premium-dot, .step-3::before { color: var(--brand-red); border-color: var(--brand-red); }
+        .step-4 .premium-dot, .step-4::before { color: var(--brand-green); border-color: var(--brand-green); }
         .premium-step:hover .premium-dot { transform: translate(-50%, -50%) scale(1.5); background: currentColor; box-shadow: 0 0 30px currentColor; }
         .premium-card { flex: 1; position: relative; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 2.5rem 2rem; overflow: hidden; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; display: flex; flex-direction: column; }
         .premium-step:hover .premium-card { transform: translateY(-15px) scale(1.03); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.2); }
@@ -404,6 +414,7 @@
         .dot.active { 
             width: 24px; 
             background: var(--brand-blue); 
+            box-shadow: 0 0 10px rgba(66, 133, 244, 0.4); 
         }
 
         #slide-1 { align-items: center; text-align: center; }
@@ -424,6 +435,11 @@
             50% { opacity: 1; }
             100% { transform: translateX(30px); opacity: 0; }
         }
+        @keyframes glowingPulse {
+            0% { box-shadow: 0 0 20px rgba(66, 133, 244, 0.4), inset 0 0 10px rgba(66, 133, 244, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(66, 133, 244, 0.8), inset 0 0 20px rgba(66, 133, 244, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(66, 133, 244, 0.4), inset 0 0 10px rgba(66, 133, 244, 0.2); }
+        }
         .cta-btn {
             display: inline-block;
             padding: 1rem 2.5rem;
@@ -438,6 +454,7 @@
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            animation: glowingPulse 3s infinite;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             text-decoration: none;
             position: relative;
@@ -453,7 +470,7 @@
         }
         .cta-btn:hover {
             transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3);
         }
         .cta-btn:hover::before { left: 150%; }
     </style>
@@ -1087,7 +1104,7 @@
                         
                         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
                         card.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                        card.style.boxShadow = `0 30px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)`;
+                        card.style.boxShadow = `0 30px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), 0 0 20px rgba(66, 133, 244, 0.15)`;
                         
                         if(spotlight) {
                             spotlight.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.1), transparent 60%)`;
