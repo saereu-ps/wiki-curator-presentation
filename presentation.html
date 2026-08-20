@@ -359,32 +359,31 @@
         @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
         @keyframes pulseArrow { 0% { opacity: 0.3; transform: translateX(-5px); } 50% { opacity: 1; transform: translateX(5px); } 100% { opacity: 0.3; transform: translateX(-5px); } }
 
-        /* --- UI Controls --- */
+        /* --- Premium UI Controls --- */
         .controls {
             position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-            display: flex; justify-content: center; align-items: center; gap: 2rem;
-            padding: 0.8rem 1.5rem; z-index: 100; pointer-events: auto;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: center; align-items: center; gap: 1rem;
+            padding: 0.4rem 0.5rem; z-index: 100; pointer-events: auto;
+            background: rgba(10, 11, 16, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 100px;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .nav-btn {
-            background: transparent; border: none; color: var(--text-primary);
-            width: 44px; height: 44px; border-radius: 50%;
+            background: transparent; border: none; color: var(--text-secondary);
+            width: 32px; height: 32px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            transition: background 0.3s, box-shadow 0.3s, color 0.3s, transform 0.2s;
+            transition: color 0.3s, background 0.3s;
             cursor: pointer;
         }
         .nav-btn:hover:not(:disabled) { 
-            background: rgba(255,255,255,0.1); color: var(--brand-blue); 
-            box-shadow: 0 0 15px rgba(66, 133, 244, 0.2);
-            transform: scale(1.1);
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.1);
         }
-        .nav-btn:disabled { opacity: 0.3; pointer-events: none; }
-        .nav-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .nav-btn:disabled { opacity: 0.2; pointer-events: none; }
+        .nav-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
         
         /* --- Fullscreen Button --- */
         .fullscreen-btn {
@@ -403,9 +402,10 @@
         }
         .fullscreen-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        .progress-indicator { display: flex; gap: 0.8rem; pointer-events: auto; align-items: center; justify-content: center; }
-        .dot { width: 8px; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.2); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer; }
-        .dot.active { width: 32px; background: var(--brand-blue); box-shadow: 0 0 12px rgba(66, 133, 244, 0.6); }
+        .progress-indicator { display: flex; gap: 0.5rem; pointer-events: auto; align-items: center; justify-content: center; padding: 0 0.5rem; }
+        .dot { width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.15); transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer; }
+        .dot:hover { background: rgba(255,255,255,0.4); }
+        .dot.active { width: 20px; background: #FFFFFF; box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
 
         #slide-1 { align-items: center; text-align: center; }
         #slide-1 .lead-text { margin-left: auto; margin-right: auto; }
