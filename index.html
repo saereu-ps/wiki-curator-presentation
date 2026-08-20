@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki Curator - Interactive Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Google Light-Dark Theme */
+            --bg-base: #1A1D20; 
+            --text-primary: #FFFFFF; 
+            --text-secondary: #9AA0A6; 
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* Google Brand Colors from Palette */
+            --brand-red: #E34B35;
+            --brand-yellow: #F5C300;
+            --brand-green: #4FB258;
+            --brand-blue: #4285F4;
+            --brand-gray: #F2F2F2;
+            
+            --font-display: 'Outfit', 'Prompt', sans-serif;
+            --font-body: 'Outfit', 'Prompt', sans-serif;
+            --font-mono: ui-monospace, "SF Mono", monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* --- Custom Interactive Cursor --- */
+        @media (pointer: fine) {
+            body, a, button, .dot { cursor: none !important; }
+            
+            .cursor-dot {
+                position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+                background-color: var(--brand-red); border-radius: 50%;
+                pointer-events: none; z-index: 9999;
+                transform: translate(-50%, -50%);
+                will-change: transform;
+            }
+            .cursor-ring {
+                position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+                border: 2px solid rgba(227, 75, 53, 0.5); border-radius: 50%;
+                pointer-events: none; z-index: 9998;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+                will-change: transform, width, height;
+            }
+            .cursor-ring.active {
+                width: 70px; height: 70px;
+                background-color: rgba(227, 75, 53, 0.1);
+                border-color: var(--brand-red);
+            }
+            .cursor-ring.clicking {
+                width: 30px; height: 30px;
+                background-color: rgba(227, 75, 53, 0.4);
+            }
+        }
+
+        /* Language Toggle Logic */
+        body.lang-th .lang-en { display: none !important; }
+        body.lang-en .lang-th { display: none !important; }
+
+        /* --- Aurora Sky Background (Top Half) --- */
+        .mesh-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; pointer-events: none; overflow: hidden;
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            transform-origin: center center;
+            will-change: transform;
+        }
+        
+        .blob {
+            position: absolute; border-radius: 50%; opacity: 0.35; 
+            animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        
+        .blob-1 { top: -10%; left: 10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(66, 133, 244, 1) 0%, rgba(66, 133, 244, 0) 70%); }
+        .blob-2 { top: 0%; right: 10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(227, 75, 53, 1) 0%, rgba(227, 75, 53, 0) 70%); animation-delay: -5s; }
+        .blob-3 { top: 20%; left: 40%; width: 45vw; height: 45vw; background: radial-gradient(circle, rgba(245, 195, 0, 1) 0%, rgba(245, 195, 0, 0) 70%); animation-delay: -10s; }
+        .blob-4 { top: 10%; left: -10%; width: 55vw; height: 55vw; background: radial-gradient(circle, rgba(79, 178, 88, 1) 0%, rgba(79, 178, 88, 0) 70%); animation-delay: -15s; }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(5%, 10%) scale(1.05) rotate(90deg); }
+            100% { transform: translate(-5%, 5%) scale(0.95) rotate(180deg); }
+        }
+
+        /* --- 3D Moving Cyber Grid Background (Bottom Half) --- */
+        .grid-3d-container {
+            position: fixed; top: 40%; left: 0; width: 100vw; height: 60vh;
+            perspective: 600px; z-index: 0; pointer-events: none;
+        }
+        .grid-3d {
+            position: absolute; width: 200vw; height: 150vh;
+            left: -50vw; top: -10vh;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 80px 80px;
+            transform: rotateX(75deg);
+            transform-origin: center top;
+            animation: gridMove 2s linear infinite;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 100%);
+        }
+        @keyframes gridMove {
+            0% { transform: rotateX(75deg) translateY(0); }
+            100% { transform: rotateX(75deg) translateY(80px); }
+        }
+
+        /* --- Presentation Framework --- */
+        .presentation {
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center; z-index: 1;
+            perspective: 2500px;
+            transform-style: preserve-3d;
+        }
+
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 4rem 10vw;
+            opacity: 0; visibility: hidden;
+            transform: translateX(60vw) translateZ(-800px) rotateY(35deg);
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease;
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+        }
+
+        .slide.active { opacity: 1; visibility: visible; transform: translateX(0) translateZ(0) rotateY(0deg); z-index: 2; }
+        .slide.prev { transform: translateX(-60vw) translateZ(-800px) rotateY(-35deg); opacity: 0; }
+        .slide.next { transform: translateX(60vw) translateZ(-800px) rotateY(35deg); opacity: 0; }
+
+        /* Staggered Animations */
+        .slide .stagger { opacity: 0; transform: translateY(60px) translateZ(-150px) rotateX(-15deg); transition: all 1s cubic-bezier(0.19, 1, 0.22, 1); }
+        .slide.active .stagger { opacity: 1; transform: translateY(0) translateZ(0) rotateX(0deg); }
+        .slide.active .stagger:nth-child(1) { transition-delay: 0.1s; }
+        .slide.active .stagger:nth-child(2) { transition-delay: 0.15s; }
+        .slide.active .stagger:nth-child(3) { transition-delay: 0.2s; }
+        .slide.active .stagger:nth-child(4) { transition-delay: 0.25s; }
+        .slide.active .stagger:nth-child(5) { transition-delay: 0.3s; }
+
+        /* --- Typography --- */
+        h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
+
+        h1 { font-size: clamp(3.5rem, 7vw, 6rem); line-height: 1.1; margin-bottom: 1rem; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-red) 50%, var(--brand-yellow) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem; }
+        .lead-text { font-size: clamp(1.2rem, 2.2vw, 1.5rem); color: var(--text-secondary); max-width: 900px; font-weight: 400; line-height: 1.6; margin-bottom: 3rem; }
+        
+        .badge {
+            display: inline-block; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary); padding: 0.5rem 1.5rem; border-radius: 50px;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        /* --- Modern Sliding Language Toggle --- */
+        .lang-toggle-container {
+            position: relative; display: inline-flex;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px; padding: 6px;
+            backdrop-filter: blur(20px); margin-top: 2rem;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .lang-toggle-bg {
+            position: absolute; top: 6px; left: 6px;
+            width: 130px; height: calc(100% - 12px);
+            background: linear-gradient(135deg, var(--brand-blue) 0%, #8b5cf6 100%);
+            border-radius: 100px; z-index: 1;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+            will-change: transform;
+        }
+
+        .lang-toggle-btn {
+            position: relative; z-index: 2;
+            background: transparent; border: none;
+            color: var(--text-secondary);
+            width: 130px;
+            padding: 0.8rem 0; text-align: center;
+            font-family: var(--font-display); font-size: 1.15rem; font-weight: 600;
+            cursor: pointer; transition: color 0.3s;
+        }
+
+        .lang-toggle-btn.active { color: #FFFFFF; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        /* --- Interactive 3D Cards --- */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; width: 100%; max-width: 1200px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; width: 100%; max-width: 1200px; }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem; border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, border-color 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            will-change: transform;
+        }
+        
+        .card-content { transform: translateZ(40px); pointer-events: none; position: relative; z-index: 2; }
+        
+        .card-spotlight {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 60%);
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 1;
+            will-change: background;
+        }
+        .card:hover .card-spotlight { opacity: 1; }
+
+        .card-icon {
+            width: 56px; height: 56px; margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.15) 0%, rgba(79, 178, 88, 0.15) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            color: var(--brand-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .card-icon svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+
+        .card h3 { font-size: 1.6rem; margin-bottom: 1rem; color: var(--text-primary); line-height: 1.3; }
+        .card p { color: var(--text-secondary); font-size: 1.1rem; font-weight: 400; }
+        .span-2 { grid-column: span 2; }
+        .span-3 { grid-column: span 3; }
+
+        /* --- Minimalist Table / Architecture --- */
+        .arch-list { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 1200px; }
+        .arch-item {
+            display: grid; grid-template-columns: 200px 120px 1fr; gap: 2rem;
+            padding: 1.5rem 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 16px; align-items: center; backdrop-filter: blur(20px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.2s ease-out;
+            will-change: transform;
+        }
+        .arch-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .arch-path { font-family: var(--font-mono); font-size: 1.1rem; color: var(--brand-green); font-weight: 600;}
+        .arch-tag { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.8rem; border-radius: 4px; text-align: center; border: 1px solid rgba(66, 133, 244, 0.3); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1); font-weight: 600; }
+        .arch-desc { color: var(--text-secondary); font-size: 1.05rem; font-weight: 400; }
+
+        /* --- Mind-Blowing Demo Animations --- */
+        .demo-container { display: flex; align-items: stretch; gap: 2vw; width: 100%; max-width: 1200px; margin-top: 1rem; }
+        .type-text { font-size: 1.25rem; font-weight: 500; color: #FFFFFF; line-height: 1.8; border-left: 4px solid var(--brand-yellow); padding-left: 1.5rem; font-style: italic; }
+        
+        .terminal-text { font-family: var(--font-mono); font-size: 1rem; line-height: 2.2; color: var(--text-secondary); }
+        .terminal-text .line { opacity: 0; transform: translateX(-15px); }
+        .slide.active .terminal-text .line { animation: slideIn 0.4s forwards; }
+        
+        .terminal-text span { font-weight: 700; margin-right: 10px; }
+        .highlight-red { color: var(--brand-red); text-decoration: line-through; }
+        .highlight-green { color: var(--brand-green); font-weight: 700; font-size: 1.2rem; text-shadow: 0 0 10px rgba(79, 178, 88, 0.4); }
+        
+        .terminal-text .warning { color: var(--brand-yellow); margin-top: 1rem; padding: 0.8rem 1rem; background: rgba(245, 195, 0, 0.1); border: 1px solid rgba(245, 195, 0, 0.3); border-radius: 8px; line-height: 1.5; }
+        .terminal-text .success { color: var(--brand-blue); margin-top: 1rem; font-weight: 600; padding: 0.8rem 1rem; background: rgba(66, 133, 244, 0.1); border: 1px solid rgba(66, 133, 244, 0.3); border-radius: 8px;}
+        
+        .slide.active .delay-1 { animation-delay: 0.6s; }
+        .slide.active .delay-2 { animation-delay: 1.4s; }
+        .slide.active .delay-3 { animation-delay: 2.2s; }
+        .slide.active .delay-4 { animation-delay: 3.5s; }
+        .slide.active .delay-5 { animation-delay: 4.5s; }
+        .slide.active .delay-6 { animation-delay: 5.5s; }
+        
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulseArrow { 0% { opacity: 0.3; transform: translateX(-5px); } 50% { opacity: 1; transform: translateX(5px); } 100% { opacity: 0.3; transform: translateX(-5px); } }
+
+        /* --- UI Controls --- */
+        .controls {
+            position: fixed; bottom: 3rem; left: 0; right: 0;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 4vw; z-index: 100; pointer-events: none;
+        }
+
+        .nav-btn {
+            pointer-events: auto; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15); color: var(--text-primary);
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            will-change: transform;
+            backdrop-filter: blur(10px);
+        }
+        .nav-btn:hover:not(:disabled) { 
+            background: rgba(255,255,255,0.15); border-color: var(--brand-blue); color: #FFFFFF; 
+            box-shadow: 0 0 25px rgba(66, 133, 244, 0.4), inset 0 0 10px rgba(66, 133, 244, 0.2);
+        }
+        .nav-btn:disabled { opacity: 0.3; pointer-events: none; box-shadow: none;}
+        .nav-btn svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        .progress-indicator { display: flex; gap: 0.8rem; pointer-events: auto; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        .dot.active { background: var(--brand-blue); transform: scale(1.8); box-shadow: 0 0 10px rgba(66, 133, 244, 0.5); }
+
+        #slide-1 { align-items: center; text-align: center; }
+        #slide-1 .lead-text { margin-left: auto; margin-right: auto; }
+        .cursor { display: inline-block; width: 10px; height: 1em; background-color: var(--brand-blue); vertical-align: middle; animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="lang-en">
+    
+    <!-- Custom Cursor DOM Elements -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Aurora Background + 3D Grid -->
+    <div class="mesh-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+    <div class="grid-3d-container">
+        <div class="grid-3d"></div>
+    </div>
+
+    <div class="presentation">
+        
+        <!-- Slide 1: Hero -->
+        <div class="slide active" id="slide-1">
+            <h1 class="stagger">Wiki Curator<span class="gradient-text">.</span><span class="cursor"></span></h1>
+            
+            <p class="lead-text stagger lang-en">The ultimate assistant that turns daily meeting notes into a thriving team knowledge graph.</p>
+            <p class="lead-text stagger lang-th">ผู้ช่วยที่รับบันทึกการประชุมของคุณทุกวัน แล้วแปลงให้เป็นคลังความรู้ที่ทั้งทีมค้นหาได้</p>
+            
+            <!-- Modern Sliding Language Toggle -->
+            <div class="lang-toggle-container stagger magnetic-el">
+                <div class="lang-toggle-bg" id="langToggleBg"></div>
+                <button class="lang-toggle-btn active" id="btn-en" onclick="setLanguage('en')">English</button>
+                <button class="lang-toggle-btn" id="btn-th" onclick="setLanguage('th')">ภาษาไทย</button>
+            </div>
+        </div>
+
+        <!-- Slide 2: Core Philosophy -->
+        <div class="slide" id="slide-2">
+            <h2 class="stagger lang-en">The Daily Struggle</h2>
+            <h2 class="stagger lang-th">ปัญหาที่เจอทุกวัน</h2>
+            
+            <p class="lead-text stagger lang-en">Don't let team knowledge disappear when people leave.</p>
+            <p class="lead-text stagger lang-th">อย่าปล่อยให้ความรู้หายไปพร้อมกับคน เปลี่ยนบันทึกส่วนตัวให้เป็นระบบ</p>
+            
+            <div class="grid-2 stagger">
+                <div class="card">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                        <h3 class="lang-en">The Problem</h3>
+                        <h3 class="lang-th">ปัญหา</h3>
+                        <p class="lang-en">Meeting notes are scattered across apps. When someone asks "what was decided?", you have to dig through files. If a secretary leaves, the knowledge disappears with them.</p>
+                        <p class="lang-th">จดโน้ตกระจัดกระจาย ผ่านไปสองสัปดาห์ต้องไล่เปิดทีละไฟล์ ถ้าเลขาเปลี่ยนคน ความรู้ที่สะสมไว้ก็หายไปพร้อมกับคน เพราะมันอยู่แค่ในหัวหรือไฟล์ส่วนตัว</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline></svg></div>
+                        <h3 class="lang-en">The Solution</h3>
+                        <h3 class="lang-th">ทางแก้</h3>
+                        <p class="lang-en">Dump raw notes directly into the chat. The system links them to projects and people automatically. Knowledge becomes a team asset everyone can query without asking you.</p>
+                        <p class="lang-th">ส่งโน้ตดิบเข้าไปตรงๆ ไม่ต้องเรียบเรียง ระบบจะอ่านและเชื่อมโยงกับหน้าโครงการให้เอง ความรู้กลายเป็นสมบัติของทีมที่คนอื่นถามหาเจอได้เอง</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Capabilities -->
+        <div class="slide" id="slide-3">
+            <h2 class="stagger lang-en">Core Capabilities</h2>
+            <h2 class="stagger lang-th">Agent ตัวนี้ทำอะไรได้บ้าง?</h2>
+            
+            <p class="lead-text stagger lang-en">Everything you need to manage knowledge, wrapped in a simple chat interface.</p>
+            <p class="lead-text stagger lang-th">จัดการคลังความรู้ทั้งหมดผ่านการพิมพ์แชทปกติ ไม่ต้องเรียนรู้เมนูซับซ้อน</p>
+            
+            <div class="grid-2 stagger">
+                <div class="card">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon" style="background: linear-gradient(135deg, rgba(66, 133, 244, 0.2) 0%, rgba(227, 75, 53, 0.2) 100%); color: var(--brand-blue);"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                        <h3 class="lang-en">Query & Ingest</h3>
+                        <h3 class="lang-th">ถามความรู้ & บันทึกใหม่</h3>
+                        <p class="lang-en"><strong>Query:</strong> Ask questions in natural language and get answers with citations.<br><br><strong>Ingest:</strong> Save raw notes and files. The AI will propose a plan to integrate them into the vault.</p>
+                        <p class="lang-th"><strong>ถามหาความรู้:</strong> ค้นหาและตอบพร้อมอ้างอิงชื่อหน้า<br><br><strong>บันทึกใหม่:</strong> เก็บโน้ตหรือไฟล์ที่ส่งเข้าไป เชื่อมกับหน้าโครงการที่เกี่ยวข้อง โดยจะเสนอแผนให้ดูก่อนเสมอ</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon" style="background: linear-gradient(135deg, rgba(245, 195, 0, 0.2) 0%, rgba(79, 178, 88, 0.2) 100%); color: var(--brand-yellow);"><svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="20" y2="4"></line><line x1="4" y1="4" x2="20" y2="20"></line></svg></div>
+                        <h3 class="lang-en">Synthesize & Lint</h3>
+                        <h3 class="lang-th">สรุปข้อมูล & ตรวจสุขภาพ</h3>
+                        <p class="lang-en"><strong>Synthesize:</strong> Compare projects or create timelines across multiple pages.<br><br><strong>Lint:</strong> Scan the vault for broken links or thin content without modifying anything.</p>
+                        <p class="lang-th"><strong>สรุปข้ามหน้า:</strong> เปรียบเทียบข้อมูลจากหลายหน้ามารวมกัน เสนอเก็บเป็นหน้าใหม่<br><br><strong>ตรวจสุขภาพ:</strong> สแกนหาหน้าที่พัง หรือลิงก์เสีย (รายงานอย่างเดียว ไม่แก้เอง)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Vault Architecture -> Post-Meeting Workflow -->
+        <div class="slide" id="slide-4">
+            <h2 class="stagger lang-en">The Post-Meeting Workflow</h2>
+            <h2 class="stagger lang-th">หลังประชุมแต่ละครั้ง ทำแค่นี้</h2>
+            
+            <p class="lead-text stagger lang-en">A seamless process from raw meeting notes to a structured knowledge graph.</p>
+            <p class="lead-text stagger lang-th">เปลี่ยนโน้ตการประชุม ให้กลายเป็นฐานความรู้ของทีมอย่างง่ายดาย</p>
+            
+            <div class="arch-list stagger">
+                <div class="arch-item magnetic-el">
+                    <div class="arch-path lang-en">1. Send Notes</div>
+                    <div class="arch-path lang-th">1. ส่งโน้ตดิบ</div>
+                    <div class="arch-tag lang-en" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">Action</div>
+                    <div class="arch-tag lang-th" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">คุณทำ</div>
+                    <div class="arch-desc lang-en">Paste text or attach files. Add a brief context (e.g. "Weekly CRM meeting").</div>
+                    <div class="arch-desc lang-th">วางข้อความหรือแนบไฟล์เข้าไปได้เลย ไม่ต้องเรียบเรียงเป็นทางการ</div>
+                </div>
+                <div class="arch-item magnetic-el">
+                    <div class="arch-path lang-en">2. AI Proposes Plan</div>
+                    <div class="arch-path lang-th">2. ระบบเสนอแผน</div>
+                    <div class="arch-tag lang-en" style="border-color: rgba(245, 195, 0, 0.4); color: var(--brand-yellow); background: rgba(245, 195, 0, 0.1);">AI</div>
+                    <div class="arch-tag lang-th" style="border-color: rgba(245, 195, 0, 0.4); color: var(--brand-yellow); background: rgba(245, 195, 0, 0.1);">AI ทำ</div>
+                    <div class="arch-desc lang-en">The system searches past records and proposes what pages to update.</div>
+                    <div class="arch-desc lang-th">ระบบจะค้นว่าเคยมีบันทึกเรื่องนี้ไหม และเสนอสรุปว่าจะเก็บอะไรบ้างให้ดูก่อน</div>
+                </div>
+                <div class="arch-item magnetic-el">
+                    <div class="arch-path lang-en">3. You Approve</div>
+                    <div class="arch-path lang-th">3. อนุมัติ</div>
+                    <div class="arch-tag lang-en" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">Action</div>
+                    <div class="arch-tag lang-th" style="border-color: rgba(66, 133, 244, 0.4); color: var(--brand-blue); background: rgba(66, 133, 244, 0.1);">คุณทำ</div>
+                    <div class="arch-desc lang-en">Review the plan, type "Approve", and click the confirm button.</div>
+                    <div class="arch-desc lang-th">คุณอ่านแผนที่ AI เสนอ พิมพ์ "อนุมัติ" และกดยืนยันในกล่อง UI ที่เด้งขึ้นมา</div>
+                </div>
+                <div class="arch-item magnetic-el">
+                    <div class="arch-path lang-en">4. Saved & Ready</div>
+                    <div class="arch-path lang-th">4. บันทึกเสร็จสิ้น</div>
+                    <div class="arch-tag lang-en" style="border-color: rgba(79, 178, 88, 0.4); color: var(--brand-green); background: rgba(79, 178, 88, 0.1);">Done</div>
+                    <div class="arch-tag lang-th" style="border-color: rgba(79, 178, 88, 0.4); color: var(--brand-green); background: rgba(79, 178, 88, 0.1);">สำเร็จ</div>
+                    <div class="arch-desc lang-en">Knowledge is permanently saved and instantly searchable by the whole team.</div>
+                    <div class="arch-desc lang-th">ข้อมูลถูกบันทึกเสร็จสมบูรณ์ ทุกคนในทีมสามารถแชทเข้ามาถามหาความรู้ได้ทันที</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Cross Page Update Demo -->
+        <div class="slide" id="slide-5">
+            <h2 class="stagger lang-en">Real-Time Knowledge Synthesis</h2>
+            <h2 class="stagger lang-th">อ่าน วิเคราะห์ และคำนวณแบบ Real-time</h2>
+            
+            <p class="lead-text stagger lang-en">Watch the engine read a raw note, calculate the impact, and update the graph dynamically.</p>
+            <p class="lead-text stagger lang-th">อึ้งไปเลย! ระบบไม่ทำงานแบบไฟล์โง่ๆ แต่มันสามารถ "อ่าน ทำความเข้าใจ คำนวณ และอัปเดต" ข้อมูลให้เอง</p>
+            
+            <div class="demo-container stagger">
+                <!-- Left: Raw Input -->
+                <div class="card" style="flex: 1; padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; color: var(--brand-yellow); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem; font-family: var(--font-mono); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Raw Meeting Note (Input)
+                    </div>
+                    <div class="type-text lang-en">
+                        "Decision: CEO ordered a 30% budget cut for the CRM project immediately, down from the original 5M THB baseline."
+                    </div>
+                    <div class="type-text lang-th">
+                        "มติที่ประชุม: บอสสั่งหั่นงบโปรเจกต์ CRM ลง 30% ให้มีผลทันที จากเดิมที่เคยตั้งไว้ 5 ล้านบาท"
+                    </div>
+                </div>
+                
+                <!-- Middle: Flow Arrow -->
+                <div class="demo-flow" style="display: flex; align-items: center; justify-content: center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 48px; color: var(--brand-blue); animation: pulseArrow 1.5s infinite;"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                </div>
+
+                <!-- Right: Agent Brain -->
+                <div class="card" style="flex: 1.5; padding: 2.5rem; background: rgba(0,0,0,0.6);">
+                    <div style="display: flex; align-items: center; color: var(--brand-blue); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem; font-family: var(--font-mono); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 8px;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                        Agent Reasoning Process
+                    </div>
+                    <div class="terminal-text lang-en">
+                        <div class="line delay-1"><span>></span> Retrieving Entity: [Project_CRM.md]...</div>
+                        <div class="line delay-2"><span>></span> Current Budget: <span class="highlight-red">5,000,000 THB</span> (Ref: Q1 Plan)</div>
+                        <div class="line delay-3"><span>></span> Calculating impact: 5,000,000 - 30%...</div>
+                        <div class="line delay-4"><span>></span> New Budget: <span class="highlight-green">3,500,000 THB</span></div>
+                        <div class="line delay-5 warning"><span>[!]</span> CONTRADICTION LOGGED: Budget cut from Q1 baseline.</div>
+                        <div class="line delay-6 success"><span>[✓]</span> Project Page Updated Automatically.</div>
+                    </div>
+                    <div class="terminal-text lang-th">
+                        <div class="line delay-1"><span>></span> ค้นหาข้อมูลเดิม: [แฟ้มโปรเจกต์_CRM.md]...</div>
+                        <div class="line delay-2"><span>></span> งบประมาณเดิม: <span class="highlight-red">5,000,000 บาท</span> (อ้างอิง: แผน Q1)</div>
+                        <div class="line delay-3"><span>></span> กำลังคำนวณ: ลดลง 30% จาก 5,000,000...</div>
+                        <div class="line delay-4"><span>></span> งบประมาณใหม่: <span class="highlight-green">3,500,000 บาท</span></div>
+                        <div class="line delay-5 warning"><span>[!]</span> บันทึกข้อขัดแย้ง: ตัวเลขงบลดลงจากที่เคยอนุมัติไว้ใน Q1</div>
+                        <div class="line delay-6 success"><span>[✓]</span> อัปเดตตัวเลขในหน้าโปรเจกต์เรียบร้อยแล้ว</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Review & Edit -->
+        <div class="slide" id="slide-6">
+            <h2 class="stagger lang-en">Total Control & Review</h2>
+            <h2 class="stagger lang-th">ปรับแผนก่อนอนุมัติได้</h2>
+            
+            <p class="lead-text stagger lang-en">You dictate what goes into the vault. Don't accept the AI's first draft if it's not perfect.</p>
+            <p class="lead-text stagger lang-th">คุณคือผู้คุมประตู ควบคุมได้เต็มที่ ไม่จำเป็นต้องกดรับแผนของ AI ทั้งดุ้น</p>
+            
+            <div class="grid-3 stagger">
+                <div class="card span-3" style="display: flex; flex-direction: row; gap: 3rem; align-items: center;">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content" style="flex: 1;">
+                        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div>
+                        <h3 class="lang-en">Edit Before Saving</h3>
+                        <h3 class="lang-th">สั่งแก้แผนก่อนกดอนุมัติ</h3>
+                        <p class="lang-en">Review the pages the AI plans to create or modify. If it includes sensitive personal chatter, simply reply: <em>"Skip the salary discussion, only save the project changes"</em>. The AI will revise the plan and ask for approval again.</p>
+                        <p class="lang-th">ก่อนอนุมัติ ให้ดูว่าระบบจะสร้างหน้าใหม่ หรือแก้หน้าเดิมอย่างไร ถ้ามีเรื่องส่วนตัวหลุดเข้าไป คุณสามารถสั่ง <em>"ตัดส่วนเรื่องเงินเดือนออก ไม่ต้องเก็บ"</em> ระบบจะทำแผนมาให้ดูใหม่ การอนุมัติแผนเดิมจะไม่ตกทอดมาแผนใหม่</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Secretary Governance -->
+        <div class="slide" id="slide-7">
+            <h2 class="stagger lang-en">Security & Limitations</h2>
+            <h2 class="stagger lang-th">ข้อควรระวังสำหรับงานเลขา</h2>
+            
+            <p class="lead-text stagger lang-en">Critical safety rules enforced structurally to protect your workflow.</p>
+            <p class="lead-text stagger lang-th">กฎเหล็กที่ระบบตั้งไว้เพื่อป้องกันความผิดพลาด</p>
+            
+            <div class="grid-2 stagger">
+                <div class="card">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon" style="background: linear-gradient(135deg, rgba(79, 178, 88, 0.2) 0%, rgba(66, 133, 244, 0.2) 100%); color: var(--brand-green);"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                        <h3 class="lang-en">Two-Step Approval</h3>
+                        <h3 class="lang-th">การอนุมัติมีสองขั้น</h3>
+                        <p class="lang-en">Typing "Approve" is not enough. You must explicitly click the confirm button in the UI. Typing "Save without asking" will still pause the system to wait for your confirmation.</p>
+                        <p class="lang-th">พิมพ์ "อนุมัติ" อย่างเดียวยังไม่พอ ต้องกดยืนยันในกล่องที่เด้งขึ้นมาด้วยเสมอ ต่อให้สั่งระบบว่า "บันทึกเลยไม่ต้องถาม" ระบบก็จะหยุดรอให้คุณกดปุ่มยืนยันอยู่ดี</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-spotlight"></div>
+                    <div class="card-content">
+                        <div class="card-icon" style="background: linear-gradient(135deg, rgba(227, 75, 53, 0.2) 0%, rgba(245, 195, 0, 0.2) 100%); color: var(--brand-red);"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+                        <h3 class="lang-en">No Per-Page Permissions</h3>
+                        <h3 class="lang-th">ยังไม่จำกัดสิทธิ์รายหน้า</h3>
+                        <p class="lang-en">Everyone with access can read all pages. Do NOT ingest highly sensitive HR files or unannounced board decisions. Tell the AI to skip sensitive parts <em>before</em> they are ingested.</p>
+                        <p class="lang-th">ทุกคนที่เข้าถึงได้ จะอ่านได้ทุกหน้าเหมือนกันหมด ห้ามบันทึกข้อมูลอ่อนไหวเช่น เรื่องบุคคล หรือมติบอร์ดลับ ให้สั่งตัดออกก่อนส่ง หรือบอกให้ agent ข้ามส่วนนั้นตั้งแต่ตอนเสนอแผน</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- UI Controls -->
+    <div class="controls">
+        <button class="nav-btn magnetic-el" id="prevBtn" title="Previous Slide">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+        
+        <div class="progress-indicator" id="dotContainer">
+            <!-- Dots generated by JS -->
+        </div>
+        
+        <button class="nav-btn magnetic-el" id="nextBtn" title="Next Slide">
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg>
+        </button>
+    </div>
+
+    <script>
+        // Language Toggle Logic
+        function setLanguage(lang) {
+            document.body.className = `lang-${lang}`;
+            
+            const btnEn = document.getElementById('btn-en');
+            const btnTh = document.getElementById('btn-th');
+            const bg = document.getElementById('langToggleBg');
+            
+            btnEn.classList.remove('active');
+            btnTh.classList.remove('active');
+            
+            if (lang === 'en') {
+                btnEn.classList.add('active');
+                bg.style.transform = 'translateX(0)';
+            } else {
+                btnTh.classList.add('active');
+                bg.style.transform = 'translateX(130px)'; // Matches fixed width of .lang-toggle-btn
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+            
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dotContainer = document.getElementById('dotContainer');
+            
+            // Create navigation dots
+            for(let i=0; i<totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot'; 
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => {
+                    currentSlide = i;
+                    updateSlides();
+                });
+                dotContainer.appendChild(dot);
+            }
+            const dots = document.querySelectorAll('.dot');
+            
+            function updateSlides() {
+                slides.forEach((slide, index) => {
+                    slide.className = 'slide'; 
+                    if (index === currentSlide) {
+                        slide.classList.add('active');
+                    } else if (index < currentSlide) {
+                        slide.classList.add('prev');
+                    } else {
+                        slide.classList.add('next');
+                    }
+                });
+                
+                // Rotate background aurora for parallax effect
+                const meshBg = document.querySelector('.mesh-bg');
+                if(meshBg) {
+                    meshBg.style.transform = `rotate(${currentSlide * 10}deg)`;
+                }
+
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            function goToNext() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlides();
+                }
+            }
+            function goToPrev() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlides();
+                }
+            }
+            
+            nextBtn.addEventListener('click', goToNext);
+            prevBtn.addEventListener('click', goToPrev);
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goToNext(); }
+                if (e.key === 'ArrowLeft') { e.preventDefault(); goToPrev(); }
+            });
+            
+            // --- HIGH PERFORMANCE GIMMICKS LOGIC ---
+            
+            // 1. Custom Interactive Cursor
+            const cursorDot = document.getElementById('cursorDot');
+            const cursorRing = document.getElementById('cursorRing');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let ringX = mouseX;
+            let ringY = mouseY;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                if(cursorDot) {
+                    cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+                }
+            }, { passive: true });
+            
+            document.addEventListener('mousedown', () => cursorRing?.classList.add('clicking'), { passive: true });
+            document.addEventListener('mouseup', () => cursorRing?.classList.remove('clicking'), { passive: true });
+            
+            function animateCursor() {
+                let distX = mouseX - ringX;
+                let distY = mouseY - ringY;
+                ringX += distX * 0.15;
+                ringY += distY * 0.15;
+                
+                if (cursorRing) {
+                    cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+                }
+                requestAnimationFrame(animateCursor);
+            }
+            requestAnimationFrame(animateCursor);
+            
+            // 2. Setup Hover States for Cursor Ring
+            const interactables = document.querySelectorAll('.card, .magnetic-el, .dot');
+            interactables.forEach(el => {
+                el.addEventListener('mouseenter', () => cursorRing?.classList.add('active'));
+                el.addEventListener('mouseleave', () => cursorRing?.classList.remove('active'));
+            });
+
+            // 3. Magnetic Elements (Buttons/Data Rows)
+            const magneticEls = document.querySelectorAll('.magnetic-el');
+            magneticEls.forEach(el => {
+                const isNavBtn = el.classList.contains('nav-btn');
+                
+                el.addEventListener('mousemove', (e) => {
+                    window.requestAnimationFrame(() => {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        const distanceX = e.clientX - centerX;
+                        const distanceY = e.clientY - centerY;
+                        
+                        // Add scale effect dynamically to nav buttons
+                        const scaleTransform = isNavBtn ? 'scale(1.1)' : '';
+                        el.style.transform = `translate(${distanceX * 0.15}px, ${distanceY * 0.15}px) ${scaleTransform}`;
+                    });
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    window.requestAnimationFrame(() => {
+                        el.style.transform = '';
+                    });
+                });
+            });
+
+            // 4. 3D Tilt + Inner Spotlight on Cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const spotlight = card.querySelector('.card-spotlight');
+                
+                card.addEventListener('mousemove', (e) => {
+                    window.requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left; 
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -5;
+                        const rotateY = ((x - centerX) / centerX) * 5;
+                        
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                        card.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                        card.style.boxShadow = `0 30px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), 0 0 20px rgba(66, 133, 244, 0.15)`;
+                        
+                        if(spotlight) {
+                            spotlight.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.1), transparent 60%)`;
+                        }
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    window.requestAnimationFrame(() => {
+                        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                        card.style.borderColor = 'var(--glass-border)';
+                        card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)';
+                        
+                        if(spotlight) {
+                            spotlight.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 60%)`;
+                        }
+                    });
+                });
+            });
+            
+            // Initialize
+            updateSlides();
+        });
+    </script>
+</body>
+</html>
