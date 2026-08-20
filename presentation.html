@@ -400,9 +400,9 @@
         }
         .fullscreen-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        .progress-indicator { display: flex; gap: 0.8rem; pointer-events: auto; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-        .dot.active { background: var(--brand-blue); transform: scale(1.8); box-shadow: 0 0 10px rgba(66, 133, 244, 0.5); }
+        .progress-indicator { display: flex; gap: 0.8rem; pointer-events: auto; align-items: center; justify-content: center; }
+        .dot { width: 8px; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.2); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer; }
+        .dot.active { width: 32px; background: var(--brand-blue); box-shadow: 0 0 12px rgba(66, 133, 244, 0.6); }
 
         #slide-1 { align-items: center; text-align: center; }
         #slide-1 .lead-text { margin-left: auto; margin-right: auto; }
@@ -432,6 +432,7 @@
             padding: 1.5rem 4rem;
             font-size: 1.5rem;
             font-weight: 700;
+            font-family: var(--font-display);
             color: #fff;
             background: linear-gradient(135deg, var(--brand-blue) 0%, #7C3AED 100%);
             border: none;
