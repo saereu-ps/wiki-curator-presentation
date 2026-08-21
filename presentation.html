@@ -406,7 +406,11 @@
         
         .terminal-text { font-family: var(--font-mono); font-size: 1rem; line-height: 2.2; color: var(--text-secondary); }
         .terminal-text .line { opacity: 0; transform: translateX(-15px); }
-        .slide.active .terminal-text .line { animation: slideIn 0.4s forwards; }
+        .slide.active .terminal-text .line { 
+            animation-name: slideIn;
+            animation-duration: 0.4s;
+            animation-fill-mode: forwards;
+        }
         
         .terminal-text span { font-weight: 700; margin-right: 10px; }
         .highlight-red { color: var(--brand-red); text-decoration: line-through; }
@@ -415,16 +419,20 @@
         .terminal-text .warning { color: #FFBD2E; margin-top: 1.5rem; margin-bottom: 1rem; padding: 1.2rem 1.5rem; background: rgba(255, 189, 46, 0.08); border: 1px solid rgba(255, 189, 46, 0.25); border-radius: 8px; font-weight: 500; line-height: 1.6; }
         .terminal-text .success { color: #4285F4; margin-top: 1rem; margin-bottom: 0; padding: 1.2rem 1.5rem; background: rgba(66, 133, 244, 0.08); border: 1px solid rgba(66, 133, 244, 0.25); border-radius: 8px; font-weight: 600; line-height: 1.6; }
         
-        .slide.active .delay-1 { animation-delay: 0.6s; }
-        .slide.active .delay-2 { animation-delay: 1.4s; }
-        .slide.active .delay-3 { animation-delay: 2.2s; }
-        .slide.active .delay-4 { animation-delay: 3.5s; }
-        .slide.active .delay-5 { animation-delay: 4.5s; }
-        .slide.active .delay-6 { animation-delay: 5.5s; }
-        .slide.active .delay-7 { animation-delay: 6.5s; }
-        .slide.active .delay-8 { animation-delay: 7.5s; }
+        .slide.active .delay-1 { animation-delay: 0.6s !important; }
+        .slide.active .delay-2 { animation-delay: 1.4s !important; }
+        .slide.active .delay-3 { animation-delay: 2.2s !important; }
+        .slide.active .delay-4 { animation-delay: 3.5s !important; }
+        .slide.active .delay-5 { animation-delay: 4.5s !important; }
+        .slide.active .delay-6 { animation-delay: 5.5s !important; }
+        .slide.active .delay-7 { animation-delay: 6.5s !important; }
+        .slide.active .delay-8 { animation-delay: 7.5s !important; }
+        
+        .fade-drop { opacity: 0; transform: translateY(-20px); }
+        .slide.active .fade-drop { animation: fadeDropIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         
         @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeDropIn { to { opacity: 1; transform: translateY(0); } }
         @keyframes pulseArrow { 0% { opacity: 0.3; transform: translateX(-5px); } 50% { opacity: 1; transform: translateX(5px); } 100% { opacity: 0.3; transform: translateX(-5px); } }
 
         /* --- Refined Edge-to-Edge UI Controls --- */
@@ -924,7 +932,7 @@
                     </div>
 
                     <!-- New Note (Drops in) -->
-                    <div class="line delay-1" style="background: var(--brand-blue); color: #fff; padding: 1.2rem 1.5rem; border-radius: 12px 12px 12px 2px; box-shadow: 0 10px 25px rgba(66, 133, 244, 0.3); font-size: 1.1rem; line-height: 1.5; position: relative; z-index: 2; margin-top: auto;">
+                    <div class="fade-drop delay-1" style="background: var(--brand-blue); color: #fff; padding: 1.2rem 1.5rem; border-radius: 12px 12px 12px 2px; box-shadow: 0 10px 25px rgba(66, 133, 244, 0.3); font-size: 1.1rem; line-height: 1.5; position: relative; z-index: 2; margin-top: auto;">
                         <span class="lang-en" style="display: block; font-style: normal;">"CEO ordered a 30% budget cut for the CRM project immediately, down from the original 5M THB."</span>
                         <span class="lang-th" style="display: block; font-style: normal;">"บอสสั่งหั่นงบโปรเจกต์ CRM ลง 30% ทันที จากเดิมที่เคยตั้งไว้ 5 ล้านบาท"</span>
                         <div style="font-size: 0.75rem; opacity: 0.8; margin-top: 0.5rem; font-family: var(--font-mono);">Just now</div>
@@ -1462,7 +1470,7 @@
                     setTimeout(() => {
                         el.style.textDecoration = 'line-through';
                         el.style.color = 'var(--brand-red)';
-                    }, 3600); // Trigger slightly after counter starts
+                    }, 5600); // Trigger slightly after counter starts
                 });
             }
 
