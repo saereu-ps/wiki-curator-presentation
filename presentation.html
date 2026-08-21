@@ -227,8 +227,11 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: gradientFlow 3s ease infinite;
-            display: inline-block; /* Essential for padding to expand the clip bounding box */
-            padding: 0.15em 0; /* Fix clipping of Thai upper and lower vowels */
+            display: inline-block;
+            padding-top: 0.25em; /* Force top expansion for tall Thai vowels (e.g. ไม้โท) */
+            padding-bottom: 0.15em;
+            line-height: 1.2;
+            vertical-align: bottom;
         }
         @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
