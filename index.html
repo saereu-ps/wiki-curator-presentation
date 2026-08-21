@@ -220,18 +220,15 @@
         }
 
         h1, h2, h3 { text-wrap: balance; }
-        h1 { font-size: clamp(4rem, 8vw, 7rem); line-height: 1.1; margin-bottom: 1rem; }
+        h1 { font-size: clamp(4rem, 8vw, 7rem); line-height: 1.25; margin-bottom: 1rem; }
         
         .gradient-text {
             background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-red) 50%, var(--brand-yellow) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: gradientFlow 3s ease infinite;
-            display: inline-block;
-            padding-top: 0.25em; /* Force top expansion for tall Thai vowels (e.g. ไม้โท) */
-            padding-bottom: 0.15em;
-            line-height: 1.2;
-            vertical-align: bottom;
+            line-height: 1.4; /* Natural fix for WebKit Thai vowel clipping */
+            -webkit-box-decoration-break: clone;
         }
         @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
