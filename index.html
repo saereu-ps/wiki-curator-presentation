@@ -227,8 +227,12 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: gradientFlow 3s ease infinite;
-            line-height: 1.4; /* Natural fix for WebKit Thai vowel clipping */
-            -webkit-box-decoration-break: clone;
+            
+            /* Ultimate WebKit Clipping Fix */
+            display: inline-block;
+            vertical-align: baseline; /* Keeps text perfectly aligned with surrounding text */
+            padding: 0.25em 0.1em; /* Expands the background clipping box in all directions */
+            margin: -0.25em -0.1em; /* Offsets the padding so it doesn't shift other elements */
         }
         @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
