@@ -344,6 +344,28 @@
         .premium-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); transform: skewX(-20deg); transition: all 0.7s ease; z-index: 0; pointer-events: none; }
         .premium-step:hover .premium-card::before, .premium-step.active .premium-card::before { left: 200%; }
         .step-badge { align-self: flex-start; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 600; flex-shrink: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); border: 1px solid currentColor; background: rgba(0,0,0,0.2); }
+        /* --- Prompt Examples Table --- */
+        .prompt-table-container { width: 100%; max-width: 1200px; margin: 3rem auto 0; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; text-align: left; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .prompt-table-header { display: grid; grid-template-columns: 200px 300px 1fr; gap: 2rem; padding: 1rem 2rem; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 0.1em; font-weight: 600; }
+        .prompt-row { display: grid; grid-template-columns: 200px 300px 1fr; gap: 2rem; padding: 1.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: start; transition: background 0.3s ease; }
+        .prompt-row:last-child { border-bottom: none; }
+        .prompt-row:hover { background: rgba(255,255,255,0.02); }
+        .prompt-row .col-cap h4 { color: var(--text-primary); font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .prompt-row .col-cap .sub { color: var(--text-secondary); font-size: 0.9rem; }
+        .prompt-row .col-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .prompt-bubble { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .prompt-bubble::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--brand-blue); }
+        .row-query .prompt-bubble::before { background: var(--brand-green); }
+        .row-ingest .prompt-bubble::before { background: var(--brand-blue); }
+        .row-lint .prompt-bubble::before { background: var(--brand-yellow); }
+        .row-clean .prompt-bubble::before { background: var(--brand-red); }
+        .row-synth .prompt-bubble::before { background: linear-gradient(to bottom, var(--brand-yellow), var(--brand-green)); }
+        .prompt-bubble:last-child { margin-bottom: 0; }
+        .prompt-bubble:hover { border-color: rgba(255,255,255,0.15); background: rgba(0,0,0,0.6); }
+        .prompt-bubble code { font-family: var(--font-mono); color: #E2E8F0; font-size: 0.9rem; line-height: 1.5; word-break: break-word; flex-grow: 1; text-align: left; }
+        .copy-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary); padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; flex-shrink: 0; }
+        .copy-btn:hover { background: rgba(255,255,255,0.15); color: #FFF; border-color: rgba(255,255,255,0.3); }
+
         /* --- Mind-Blowing Demo Animations --- */
         .demo-container { display: flex; align-items: center; gap: 2vw; width: 100%; max-width: 1200px; margin-top: 1rem; }
         .type-text { font-size: 1.25rem; font-weight: 500; color: #FFFFFF; line-height: 1.8; border-left: 4px solid var(--brand-yellow); padding-left: 1.5rem; font-style: italic; }
@@ -653,6 +675,121 @@
                         <h3 class="lang-th">สรุปข้อมูล & ตรวจสุขภาพ</h3>
                         <p class="lang-en"><strong>Synthesize:</strong> Compare projects or create timelines across multiple pages.<br><br><strong>Lint:</strong> Scan the vault for broken links or thin content without modifying anything.</p>
                         <p class="lang-th"><strong>สรุปข้ามหน้า:</strong> เปรียบเทียบข้อมูลจากหลายหน้ามารวมกัน เสนอเก็บเป็นหน้าใหม่<br><br><strong>ตรวจสุขภาพ:</strong> สแกนหาหน้าที่พัง หรือลิงก์เสีย (รายงานอย่างเดียว ไม่แก้เอง)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 4.5: Prompt Examples -->
+        <div class="slide" id="slide-4-5">
+            <h2 class="stagger lang-en">Interaction Examples</h2>
+            <h2 class="stagger lang-th">ตัวอย่างคำสั่ง (Prompts)</h2>
+            
+            <p class="lead-text stagger lang-en">Interact naturally. The agent understands context and intent.</p>
+            <p class="lead-text stagger lang-th">สั่งงานด้วยภาษาธรรมชาติ Agent เข้าใจบริบทและพร้อมจัดการให้ทันที</p>
+            
+            <div class="prompt-table-container stagger">
+                <!-- Table headers -->
+                <div class="prompt-table-header">
+                    <div class="col-cap lang-en">Capability</div>
+                    <div class="col-cap lang-th">ความสามารถ</div>
+                    <div class="col-desc lang-en">What it does</div>
+                    <div class="col-desc lang-th">ทำอะไรให้</div>
+                    <div class="col-prompt lang-en">PROMPT EXAMPLES</div>
+                    <div class="col-prompt lang-th">ตัวอย่าง PROMPT</div>
+                </div>
+                
+                <!-- Row 1: Query -->
+                <div class="prompt-row row-query">
+                    <div class="col-cap">
+                        <h4 class="lang-en">Query</h4>
+                        <h4 class="lang-th">ถามหาความรู้</h4>
+                        <span class="sub lang-th">(Query)</span>
+                    </div>
+                    <div class="col-desc lang-en">Search, read, and answer with citations — supports TH & EN.</div>
+                    <div class="col-desc lang-th">ค้น อ่าน แล้วตอบพร้อมอ้างอิงชื่อหน้าที่ใช้ — ถามได้ทั้งไทยและอังกฤษ</div>
+                    <div class="col-prompt">
+                        <div class="prompt-bubble">
+                            <code class="lang-en">What is the current budget for the CRM project?</code>
+                            <code class="lang-th">งบประมาณโครงการ CRM ตอนนี้เท่าไหร่</code>
+                            <button class="copy-btn"><span class="lang-en">Copy</span><span class="lang-th">คัดลอก</span></button>
+                        </div>
+                        <div class="prompt-bubble">
+                            <code class="lang-en">Summarize what was discussed in this month's team meetings.</code>
+                            <code class="lang-th">สรุปให้หน่อยว่าประชุมทีมเดือนนี้คุยอะไรกันบ้าง</code>
+                            <button class="copy-btn"><span class="lang-en">Copy</span><span class="lang-th">คัดลอก</span></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 2: Ingest -->
+                <div class="prompt-row row-ingest">
+                    <div class="col-cap">
+                        <h4 class="lang-en">Ingest</h4>
+                        <h4 class="lang-th">บันทึกเนื้อหาใหม่</h4>
+                        <span class="sub lang-th">(Ingest)</span>
+                    </div>
+                    <div class="col-desc lang-en">Save raw notes/files, link to projects/people, and propose a plan before writing.</div>
+                    <div class="col-desc lang-th">เก็บโน้ต/ไฟล์ที่ส่งเข้าไป เชื่อมกับหน้าโครงการ/คนที่เกี่ยวข้อง เสนอแผนให้ดูก่อนเขียนจริง</div>
+                    <div class="col-prompt">
+                        <div class="prompt-bubble">
+                            <code class="lang-en">Save this to the vault as today's CRM team weekly sync.</code>
+                            <code class="lang-th">บันทึกอันนี้เข้าคลัง เป็นประชุม weekly ทีม CRM วันนี้</code>
+                            <button class="copy-btn"><span class="lang-en">Copy</span><span class="lang-th">คัดลอก</span></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 3: Lint -->
+                <div class="prompt-row row-lint">
+                    <div class="col-cap">
+                        <h4 class="lang-en">Lint</h4>
+                        <h4 class="lang-th">ตรวจสุขภาพคลัง</h4>
+                        <span class="sub lang-th">(Lint)</span>
+                    </div>
+                    <div class="col-desc lang-en">Scan for broken pages, thin content, dead links, or orphans — <strong>reports only</strong>.</div>
+                    <div class="col-desc lang-th">สแกนหาหน้าที่พัง เนื้อหาบางเกินไป ลิงก์เสีย หรือไม่มีหน้าไหนอ้างถึง — <strong>รายงานอย่างเดียว ยังไม่แก้อะไร</strong></div>
+                    <div class="col-prompt">
+                        <div class="prompt-bubble">
+                            <code class="lang-en">How is the vault's health right now? Anything needs fixing?</code>
+                            <code class="lang-th">วิกิตอนนี้สุขภาพเป็นยังไง มีอะไรต้องแก้บ้าง</code>
+                            <button class="copy-btn"><span class="lang-en">Copy</span><span class="lang-th">คัดลอก</span></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 4: Clean-up -->
+                <div class="prompt-row row-clean">
+                    <div class="col-cap">
+                        <h4 class="lang-en">Clean-up</h4>
+                        <h4 class="lang-th">ทำความสะอาด</h4>
+                        <span class="sub lang-th">(Clean-up)</span>
+                    </div>
+                    <div class="col-desc lang-en">Fix or delete issues found by Lint — requires your approval first.</div>
+                    <div class="col-desc lang-th">แก้ไขหรือลบตามที่ตรวจสุขภาพเจอ — ต้องขออนุมัติจากคุณเหมือนการบันทึกทุกครั้ง</div>
+                    <div class="col-prompt">
+                        <div class="prompt-bubble">
+                            <code class="lang-en">Please delete the pages that are just examples.</code>
+                            <code class="lang-th">ลบหน้าที่เป็นแค่ตัวอย่างทิ้งให้หน่อย</code>
+                            <button class="copy-btn"><span class="lang-en">Copy</span><span class="lang-th">คัดลอก</span></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 5: Synthesize -->
+                <div class="prompt-row row-synth">
+                    <div class="col-cap">
+                        <h4 class="lang-en">Synthesize</h4>
+                        <h4 class="lang-th">สรุปข้ามหลายหน้า</h4>
+                        <span class="sub lang-th">(Synthesize)</span>
+                    </div>
+                    <div class="col-desc lang-en">Compare, build timelines, or explain decisions by merging data from multiple pages into a new reusable page.</div>
+                    <div class="col-desc lang-th">เปรียบเทียบ ทำไทม์ไลน์ หรืออธิบายเหตุผลการตัดสินใจ โดยดึงข้อมูลจากหลายหน้ามารวมกัน แล้วเสนอเก็บเป็นหน้าใหม่ให้ใช้ซ้ำได้</div>
+                    <div class="col-prompt">
+                        <div class="prompt-bubble">
+                            <code class="lang-en">Compare the Atlas and Orion projects. If it's useful, save it as a new page.</code>
+                            <code class="lang-th">เปรียบเทียบโครงการ Atlas กับ Orion ให้หน่อย ถ้าเห็นว่าน่าเก็บช่วยไฟล์เป็นหน้าใหม่ให้ด้วย</code>
+                            <button class="copy-btn"><span class="lang-en">Copy</span><span class="lang-th">คัดลอก</span></button>
+                        </div>
                     </div>
                 </div>
             </div>
