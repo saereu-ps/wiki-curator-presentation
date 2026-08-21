@@ -166,8 +166,8 @@
 
         /* --- Canvas Background & Progress Bar --- */
         #knowledgeNet { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-        .progress-bar-container { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.05); z-index: 1000; pointer-events: none; }
-        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--brand-blue), var(--brand-green)); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px var(--brand-blue); }
+        .progress-bar-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 5px; background: rgba(255,255,255,0.05); z-index: 9999; pointer-events: none; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--brand-blue), var(--brand-green)); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px var(--brand-blue), 0 -2px 10px rgba(66, 133, 244, 0.5); border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
 
         /* Staggered Animations */
         .slide .stagger { 
@@ -1346,6 +1346,69 @@
                 });
             });
 
+            // Initialize Decrypt Text
+            const decryptElements = document.querySelectorAll('.decrypt-text');
+            decryptElements.forEach(el => {
+                el.dataset.originalText = el.textContent;
+            });
+            
+            window.decryptTimeouts = [];
+
+            function runDecryption(slide) {
+                // Clear pending timeouts
+                window.decryptTimeouts.forEach(clearTimeout);
+                window.decryptTimeouts = [];
+
+                const els = slide.querySelectorAll('.decrypt-text');
+                els.forEach(el => {
+                    const original = el.dataset.originalText;
+                    if (!original) return;
+
+                    // Determine delay based on parent animation classes
+                    let delayMs = 50; 
+                    const parent = el.closest('[class*="delay-"], .stagger');
+                    if (parent) {
+                        if (parent.classList.contains('delay-1')) delayMs = 600;
+                        else if (parent.classList.contains('delay-2')) delayMs = 1400;
+                        else if (parent.classList.contains('delay-3')) delayMs = 2200;
+                        else if (parent.classList.contains('delay-4')) delayMs = 3500;
+                        else if (parent.classList.contains('delay-5')) delayMs = 4500;
+                        else if (parent.classList.contains('delay-6')) delayMs = 5500;
+                        else if (parent.classList.contains('stagger')) delayMs = 600;
+                    }
+
+                    const tId = setTimeout(() => {
+                        let iteration = 0;
+                        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+1234567890";
+                        clearInterval(el.decryptInterval);
+                        
+                        el.textContent = original.replace(/./g, (c) => c === " " ? " " : letters[Math.floor(Math.random() * letters.length)]);
+                        
+                        el.decryptInterval = setInterval(() => {
+                            el.textContent = original
+                                .split("")
+                                .map((letter, index) => {
+                                    if (index < iteration) {
+                                        return original[index];
+                                    }
+                                    if (letter === " ") return " ";
+                                    return letters[Math.floor(Math.random() * letters.length)];
+                                })
+                                .join("");
+                            
+                            if (iteration >= original.length) {
+                                clearInterval(el.decryptInterval);
+                                el.textContent = original; // Ensure perfection
+                            }
+                            
+                            iteration += 1/2; 
+                        }, 25);
+                    }, delayMs);
+                    
+                    window.decryptTimeouts.push(tId);
+                });
+            }
+
             // 4. 3D Tilt + Inner Spotlight on Cards
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
@@ -1407,8 +1470,8 @@
             const ctx = canvas.getContext('2d');
             let canvasWidth, canvasHeight;
             let particles = [];
-            const particleCount = window.innerWidth > 768 ? 60 : 30;
-            const connectionDistance = 150;
+            const particleCount = window.innerWidth > 768 ? 100 : 50; // Increased
+            const connectionDistance = 200; // Increased
             let canvasMouseX = -1000;
             let canvasMouseY = -1000;
 
@@ -1430,7 +1493,7 @@
                     this.y = Math.random() * canvasHeight;
                     this.vx = (Math.random() - 0.5) * 0.5;
                     this.vy = (Math.random() - 0.5) * 0.5;
-                    this.radius = Math.random() * 1.5 + 0.5;
+                    this.radius = Math.random() * 2 + 0.5; // Slightly larger
                 }
                 update() {
                     this.x += this.vx;
@@ -1441,15 +1504,16 @@
                     const dx = canvasMouseX - this.x;
                     const dy = canvasMouseY - this.y;
                     const dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 120) {
-                        this.x -= dx * 0.02;
-                        this.y -= dy * 0.02;
+                    if (dist < 200) {
+                        // Stronger push
+                        this.x -= dx * 0.04;
+                        this.y -= dy * 0.04;
                     }
                 }
                 draw() {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                    ctx.fillStyle = 'rgba(255,255,255,0.35)'; // Brighter
                     ctx.fill();
                 }
             }
@@ -1471,8 +1535,8 @@
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
                             const opacity = 1 - (dist / connectionDistance);
-                            ctx.strokeStyle = `rgba(255,255,255,${opacity * 0.08})`;
-                            ctx.lineWidth = 1;
+                            ctx.strokeStyle = `rgba(255,255,255,${opacity * 0.2})`; // Brighter
+                            ctx.lineWidth = 1.2;
                             ctx.stroke();
                         }
                     }
@@ -1481,13 +1545,13 @@
                     const dx = canvasMouseX - particles[i].x;
                     const dy = canvasMouseY - particles[i].y;
                     const distMouse = Math.sqrt(dx*dx + dy*dy);
-                    if (distMouse < 150) {
+                    if (distMouse < 250) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(canvasMouseX, canvasMouseY);
-                        const opacity = 1 - (distMouse / 150);
-                        ctx.strokeStyle = `rgba(66, 133, 244, ${opacity * 0.15})`;
-                        ctx.lineWidth = 1;
+                        const opacity = 1 - (distMouse / 250);
+                        ctx.strokeStyle = `rgba(66, 133, 244, ${opacity * 0.5})`; // Brighter blue
+                        ctx.lineWidth = 1.5;
                         ctx.stroke();
                     }
                 }
