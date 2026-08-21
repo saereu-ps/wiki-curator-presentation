@@ -227,6 +227,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: gradientFlow 3s ease infinite;
+            display: inline-block; /* Essential for padding to expand the clip bounding box */
             padding: 0.15em 0; /* Fix clipping of Thai upper and lower vowels */
         }
         @keyframes gradientFlow {
@@ -1234,8 +1235,8 @@
                 </svg>
             </div>
             
-            <h1 class="stagger lang-en" style="font-size: 4rem; margin-bottom: 1rem;">Team Knowledge. <span class="gradient-text">In One Place.</span></h1>
-            <h1 class="stagger lang-th" style="font-size: 4rem; margin-bottom: 1rem;">ความรู้ของทีม. <span class="gradient-text">ในที่เดียว.</span></h1>
+            <h1 class="stagger lang-en" style="font-size: 4rem; margin-bottom: 1rem;">Team Knowledge <span class="gradient-text">In One Place</span></h1>
+            <h1 class="stagger lang-th" style="font-size: 4rem; margin-bottom: 1rem;">ความรู้ของทีม <span class="gradient-text">ในที่เดียว</span></h1>
             
             <p class="lead-text stagger lang-en" style="max-width: 800px; margin: 0 auto 4rem auto;">Turn every meeting note into instantly accessible data.</p>
             <p class="lead-text stagger lang-th" style="max-width: 800px; margin: 0 auto 4rem auto;">ให้ทุกบันทึกการประชุม กลายเป็นข้อมูลที่คุณเรียกใช้ได้เสมอ</p>
