@@ -1273,6 +1273,10 @@
         function setLanguage(lang) {
             document.body.className = `lang-${lang}`;
             
+            if (window.audioEngine) {
+                window.audioEngine.playPop();
+            }
+            
             const btnEn = document.getElementById('btn-en');
             const btnTh = document.getElementById('btn-th');
             const bg = document.getElementById('langToggleBg');
@@ -1306,6 +1310,24 @@
                 
                 document.addEventListener('click', initAudio);
                 document.addEventListener('keydown', initAudio);
+            }
+            
+            playPop() {
+                if (!this.initialized) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+                
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.05);
             }
             
             playThud() {
