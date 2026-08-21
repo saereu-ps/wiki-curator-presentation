@@ -1240,6 +1240,17 @@
                     }
                 });
                 
+                if (typeof runDecryption === 'function' && slides[currentSlide]) {
+                    runDecryption(slides[currentSlide]);
+                }
+                
+                // Update Progress Bar
+                const progressBar = document.getElementById('progressBar');
+                if (progressBar && totalSlides > 1) {
+                    const progress = (currentSlide / (totalSlides - 1)) * 100;
+                    progressBar.style.width = `${progress}%`;
+                }
+                
                 // Rotate background aurora for parallax effect
                 const meshBg = document.querySelector('.mesh-bg');
                 if(meshBg) {
@@ -1470,8 +1481,8 @@
             const ctx = canvas.getContext('2d');
             let canvasWidth, canvasHeight;
             let particles = [];
-            const particleCount = window.innerWidth > 768 ? 100 : 50; // Increased
-            const connectionDistance = 200; // Increased
+            const particleCount = window.innerWidth > 768 ? 40 : 20; // Reduced for minimalist look
+            const connectionDistance = 120; // Reduced to avoid clutter
             let canvasMouseX = -1000;
             let canvasMouseY = -1000;
 
