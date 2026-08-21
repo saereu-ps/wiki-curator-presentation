@@ -180,6 +180,11 @@
         .slide.active .stagger:nth-child(3) { transition-delay: 0.3s; }
         .slide.active .stagger:nth-child(4) { transition-delay: 0.4s; }
         .slide.active .stagger:nth-child(5) { transition-delay: 0.5s; }
+        .slide.active .stagger:nth-child(6) { transition-delay: 0.6s; }
+        .slide.active .stagger:nth-child(7) { transition-delay: 0.7s; }
+        .slide.active .stagger:nth-child(8) { transition-delay: 0.8s; }
+        .slide.active .stagger:nth-child(9) { transition-delay: 0.9s; }
+        .slide.active .stagger:nth-child(10) { transition-delay: 1.0s; }
 
         /* --- Typography --- */
         h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
@@ -349,22 +354,50 @@
         .prompt-table-header { display: grid; grid-template-columns: 200px 300px 1fr; gap: 2rem; padding: 1rem 2rem; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 0.1em; font-weight: 600; }
         .prompt-row { display: grid; grid-template-columns: 200px 300px 1fr; gap: 2rem; padding: 1.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: start; transition: background 0.3s ease; }
         .prompt-row:last-child { border-bottom: none; }
-        .prompt-row:hover { background: rgba(255,255,255,0.02); }
+        .prompt-row:hover { background: rgba(255,255,255,0.03); }
         .prompt-row .col-cap h4 { color: var(--text-primary); font-size: 1.1rem; margin-bottom: 0.3rem; }
         .prompt-row .col-cap .sub { color: var(--text-secondary); font-size: 0.9rem; }
         .prompt-row .col-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
-        .prompt-bubble { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .prompt-bubble::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--brand-blue); }
-        .row-query .prompt-bubble::before { background: var(--brand-green); }
-        .row-ingest .prompt-bubble::before { background: var(--brand-blue); }
-        .row-lint .prompt-bubble::before { background: var(--brand-yellow); }
-        .row-clean .prompt-bubble::before { background: var(--brand-red); }
-        .row-synth .prompt-bubble::before { background: linear-gradient(to bottom, var(--brand-yellow), var(--brand-green)); }
+        
+        .prompt-bubble { 
+            background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(0,0,0,0.3));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 1rem;
+            display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .prompt-bubble::after { 
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+        }
+        .prompt-bubble:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
+        }
+        .prompt-bubble:hover::after { opacity: 1; }
+        
+        .prompt-bubble::before { 
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; 
+            background: var(--brand-blue);
+            box-shadow: 0 0 15px var(--brand-blue);
+        }
+        .row-query .prompt-bubble::before { background: var(--brand-green); box-shadow: 0 0 15px var(--brand-green); }
+        .row-ingest .prompt-bubble::before { background: var(--brand-blue); box-shadow: 0 0 15px var(--brand-blue); }
+        .row-lint .prompt-bubble::before { background: var(--brand-yellow); box-shadow: 0 0 15px var(--brand-yellow); }
+        .row-clean .prompt-bubble::before { background: var(--brand-red); box-shadow: 0 0 15px var(--brand-red); }
+        .row-synth .prompt-bubble::before { background: linear-gradient(to bottom, var(--brand-yellow), var(--brand-green)); box-shadow: 0 0 15px var(--brand-green); }
+        
         .prompt-bubble:last-child { margin-bottom: 0; }
-        .prompt-bubble:hover { border-color: rgba(255,255,255,0.15); background: rgba(0,0,0,0.6); }
-        .prompt-bubble code { font-family: var(--font-mono); color: #E2E8F0; font-size: 0.9rem; line-height: 1.5; word-break: break-word; flex-grow: 1; text-align: left; }
-        .copy-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary); padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; flex-shrink: 0; }
-        .copy-btn:hover { background: rgba(255,255,255,0.15); color: #FFF; border-color: rgba(255,255,255,0.3); }
+        .prompt-bubble code { font-family: var(--font-mono); color: #E2E8F0; font-size: 0.95rem; line-height: 1.5; word-break: break-word; flex-grow: 1; text-align: left; }
+        .copy-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #FFF; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; flex-shrink: 0; font-weight: 500; }
+        .copy-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
         /* --- Mind-Blowing Demo Animations --- */
         .demo-container { display: flex; align-items: center; gap: 2vw; width: 100%; max-width: 1200px; margin-top: 1rem; }
@@ -687,9 +720,9 @@
             <p class="lead-text stagger lang-en">Interact naturally. The agent understands context and intent.</p>
             <p class="lead-text stagger lang-th">สั่งงานด้วยภาษาธรรมชาติ Agent เข้าใจบริบทและพร้อมจัดการให้ทันที</p>
             
-            <div class="prompt-table-container stagger">
+            <div class="prompt-table-container">
                 <!-- Table headers -->
-                <div class="prompt-table-header">
+                <div class="prompt-table-header stagger">
                     <div class="col-cap lang-en">Capability</div>
                     <div class="col-cap lang-th">ความสามารถ</div>
                     <div class="col-desc lang-en">What it does</div>
@@ -699,7 +732,7 @@
                 </div>
                 
                 <!-- Row 1: Query -->
-                <div class="prompt-row row-query">
+                <div class="prompt-row row-query stagger">
                     <div class="col-cap">
                         <h4 class="lang-en">Query</h4>
                         <h4 class="lang-th">ถามหาความรู้</h4>
@@ -722,7 +755,7 @@
                 </div>
                 
                 <!-- Row 2: Ingest -->
-                <div class="prompt-row row-ingest">
+                <div class="prompt-row row-ingest stagger">
                     <div class="col-cap">
                         <h4 class="lang-en">Ingest</h4>
                         <h4 class="lang-th">บันทึกเนื้อหาใหม่</h4>
@@ -740,7 +773,7 @@
                 </div>
                 
                 <!-- Row 3: Lint -->
-                <div class="prompt-row row-lint">
+                <div class="prompt-row row-lint stagger">
                     <div class="col-cap">
                         <h4 class="lang-en">Lint</h4>
                         <h4 class="lang-th">ตรวจสุขภาพคลัง</h4>
@@ -758,7 +791,7 @@
                 </div>
                 
                 <!-- Row 4: Clean-up -->
-                <div class="prompt-row row-clean">
+                <div class="prompt-row row-clean stagger">
                     <div class="col-cap">
                         <h4 class="lang-en">Clean-up</h4>
                         <h4 class="lang-th">ทำความสะอาด</h4>
@@ -776,7 +809,7 @@
                 </div>
                 
                 <!-- Row 5: Synthesize -->
-                <div class="prompt-row row-synth">
+                <div class="prompt-row row-synth stagger">
                     <div class="col-cap">
                         <h4 class="lang-en">Synthesize</h4>
                         <h4 class="lang-th">สรุปข้ามหลายหน้า</h4>
